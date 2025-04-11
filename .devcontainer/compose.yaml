@@ -1,4 +1,4 @@
-name: "devcontainer"
+name: "helpdesk8"
 
 services:
   rails-app:
