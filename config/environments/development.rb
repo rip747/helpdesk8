@@ -56,7 +56,10 @@ Rails.application.configure do
   config.active_job.verbose_enqueue_logs = true
 
   # Raises error for missing translations.
-  # config.i18n.raise_on_missing_translations = true
+  config.action_view.raise_on_missing_translations = false
+  config.i18n.available_locales = [ :en, :es, :de, :fr, :it, :et, :ca, :sv, :hu, :ru, :ja, :hi, "zh-cn", "zh-tw", "pt", :nl, "tr", "pt-br", :fa, :fi, :id, :ar, :ko, :ms, :uk ]
+  config.i18n.default_locale = :en
+  config.i18n.fallbacks = true
 
   # Annotate rendered view with file names.
   config.action_view.annotate_rendered_view_with_filenames = true

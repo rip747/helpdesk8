@@ -35,6 +35,7 @@ Rails.application.configure do
   # The :test delivery method accumulates sent emails in the
   # ActionMailer::Base.deliveries array.
   config.action_mailer.delivery_method = :test
+  config.action_mailer.default_url_options = { host: Settings.site_url }
 
   # Set host to be used by links generated in mailer templates.
   config.action_mailer.default_url_options = { host: "example.com" }
@@ -43,7 +44,10 @@ Rails.application.configure do
   config.active_support.deprecation = :stderr
 
   # Raises error for missing translations.
-  # config.i18n.raise_on_missing_translations = true
+  config.i18n.raise_on_missing_translations = true
+  config.i18n.available_locales = [ :en, :es, :de, :fr, :it, :et, :ca, :sv, :hu, :ru, :ja, :hi, "zh-cn", "zh-tw", "pt", :nl, "tr", "pt-br", :fa, :fi, :id, :ar, :ko, :ms, :uk ]
+  config.i18n.default_locale = :en
+  config.i18n.fallbacks = true
 
   # Annotate rendered view with file names.
   # config.action_view.annotate_rendered_view_with_filenames = true
