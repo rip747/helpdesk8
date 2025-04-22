@@ -1,0 +1,67 @@
+// This stylesheet is for common rules that are used by all themes.  Typically this
+// would mean infrastructure type styles: things like how attachments are shown.
+// They can always be overwritten by styles in the themes .scss
+
+
+#post-images {
+	margin-top: 30px;
+
+	ul li.image img {
+		margin-top: -20px;
+	}
+
+	ul li.raw {
+		border: 1px solid #ddd;
+		width: 125px;
+		padding-top: 45px;
+		padding-bottom: 45px;
+		text-align: center;
+
+		i {
+			font-size: 36px;
+			color: #ccc;
+		}
+
+	}
+}
+
+#right-menu {
+	h2 {
+		font-size: 14px;
+	}
+}
+
+.select-image {
+  margin-top: 15px;
+  margin-bottom: 30px;
+}
+
+.vcenter {
+  display: flex;
+  align-items: center;
+}
+
+// Helpcenter ticket row styling for 'Your Tickets'
+.ticket-header{
+	padding: 15px 5px;
+	font-size: 100%;
+	font-weight: bold;
+	color: #666;
+	border-bottom: 1px solid #ddd;
+	text-transform: uppercase;
+}
+
+.ticket {
+  height: 60px;
+
+  .status-label {
+    margin-bottom: 0;
+  }
+  .label-count {
+    top: 0;
+  }
+}
+
+#topic-url {
+  display: none;
+}

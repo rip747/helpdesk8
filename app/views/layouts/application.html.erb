@@ -1,28 +1,63 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title><%= content_for(:title) || "Helpdesk8" %></title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
+	<head>
+		<%= render partial: 'layouts/head' %>
+	</head>
+	<%= css_overrides %>
 
-    <%= yield :head %>
+<body>
+<% if AppSettings['settings.google_analytics_id'].present? %>
+	<script>
+		ga('set', 'location', location.href.split('#')[0]);
+		ga('send', 'pageview', { "title": document.title });
+	</script>
+<% end %>
 
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+<div class="content">
+	<div id="top-bar"></div>
+	<div id="upper-wrapper" class="jumbotron">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<%= render :partial => 'layouts/header' %>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="body-wrapper" class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div id="main-body" >
+						<%#= bootstrap_flash %>
+						<div id="main-content">
+							<%= render 'layouts/page_title' unless params[:controller] == 'home' %>
+							<%= yield %>
+						</div>
+					</div>
+				</div>
+			</div>
+	</div>
+</div>
 
-    <link rel="icon" href="/icon.png" type="image/png">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/icon.png">
+<div id="footer-wrapper">
 
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
-    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
-    <%= javascript_importmap_tags %>
-  </head>
+	<div id="get-help-wrapper" class="wrapper">
+		<div class="row">
+			<div class="container">
+				<div class="col-md-6 text-center">
+					<h3><%= t(:get_help_header, default: "Still Need Help?") %></h3>
+				</div>
+				<div class="col-md-6 text-center">
+					<%= link_to t(:get_help_button, default: "Start a Discussion with Us"), new_topic_path, class: 'btn btn-primary btn-lg get-help-button' %>
+				</div>
+			</div>
+		</div>
+	</div>
 
-  <body>
-    <%= yield %>
-  </body>
+	<div class="container">
+		<%= render :partial => 'layouts/footer' %>
+	</div>
+</div>
+<%= "<script src='/assets/widget.v2.js'></script>".html_safe if AppSettings['widget.show_on_support_site'] == '1' %>
+</body>
 </html>
