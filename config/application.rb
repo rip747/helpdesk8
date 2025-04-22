@@ -23,5 +23,21 @@ module Helpdesk8
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+    config.to_prepare do
+      Devise::Mailer.layout "mailer" # email.haml or email.erb
+    end
+  end
+end
+
+module Api
+  class Application < Rails::Application
+    config.middleware.use Rack::Cors do
+      allow do
+        origins "*"
+        resource "*", headers: :any, methods: [ :get,
+            :post, :put, :delete, :options ]
+      end
+    end
+    config.active_record.raise_in_transactional_callbacks = true
   end
 end
