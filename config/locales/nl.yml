@@ -1,0 +1,387 @@
+# TRANSLATOR(s): Bob Moree
+
+nl:
+  language_name: "Nederlands" # The name of the translation file, in that language
+  root: &root "Home"
+  how_can_we_help: "Hoe kunnen we je helpen?"
+  browse_topics: "Onderwerpen bekijken"
+  support_team: "Onze helpdesk"
+  nothing_here: "Hier zijn nog geen vragen!"
+
+  # Navigation
+  knowledgebase: "Kennisbank"
+  community: "Forum"
+  ask_a_question: "Stel een vraag"
+  home: "Home"
+  login: "Inloggen"
+  logout: "Uitloggen"
+  register: "Registreren"
+  back_to: "Terug naar"
+  welcome_back: "Welkom terug, %{username}"
+  your_profile: "Mijn Profiel"
+  your_tickets: "Mijn vragen"
+  locale: "Taal"
+  change_your_locale: "Taal wisselen"
+
+  # Voting widget
+  did_this_help: "Was dit antwoord nuttig?"
+  yes_button: "Ja"
+  no_button: "Nee"
+  # yes_helped: 'Great! Thanks for the feedback!'
+  # no_helped: "We're sorry this didn't help you.  Please contact us for more help!"
+
+  # Search
+  search_placeholder: "Typ hier een zoekwoord, onderwerp of vraag"
+  no_results: "Geen resultaten gevonden. Pas je zoekopdracht aan en probeer het opnieuw!"
+  results_found:
+    one: "Een resultaat gevonden voor je zoekopdracht "
+    other: "%{count} resultaten gevonden voor je zoekopdracht "
+
+  # Community
+  forum_name: "Forum"
+  subject: &subject "Onderwerp"
+  message: "Bericht"
+  last_activity: "Laatst actief"
+  topic: "Discussie"
+  replies: "Antwoorden"
+  last_post: "Laatste bericht"
+  started_by: "Gestart door %{username}"
+  reply: "Reageer op dit onderwerp"
+  submit_reply: "Reactie plaatsen"
+  posted: "Geplaatst"
+  start_discussion: "Nieuwe discussie starten"
+  submit_start_discussion: "Start Discussie"
+  should_message_be_private: "Is dit een privé bericht?"
+  only_support_can_respond: "Alleen de helpdeskmedewerkers kunnen antwoorden (dit wordt een privé bericht)"
+  responses_can_come_from_everyone: "Responses can come from support or the community (recommended)"
+  collapsed_messages:
+      one: "1 ingeklapt bericht"
+      two: "2 ingeklapte berichten"
+      other: "%{count} ingeklapte berichten"
+
+  # Knowledgebase
+  written_by: "Geschreven door"
+  last_edited: "Laatst bewerkt"
+  tagged: "Tags"
+  asked_before: "Is uw vraag al eerder beantwoord? We denken dat deze kunnen gelijkaardig zijn"
+
+  # Tickets
+  tickets: "Vragen"
+  no_tickets: "Je hebt nog geen vragen gesteld"
+  ticket_number: "Vraag ID"
+  assigned_to_label: "Toegewezen aan"
+  created_on: "Aangemaakt op"
+
+  # Get Help
+  get_help_header: "Meer hulp nodig?"
+  get_help_button: "Stel ons je vraag"
+
+  # Profile
+  my_profile: 'Mijn Profiel'
+
+  # footer
+  powered_by: "Met dank aan Helpy."
+  get_your_copy: "Bekijk dit project op GitHub"
+  # version: "Version:"
+
+  # flag
+  #flag_for_review:
+  #flag_post_for_review:
+  #flag_post_placeholder:
+  #flag:
+
+  # devise/sessions/new
+  login: Inloggen
+
+  # devise/shared/links
+  forgot_password: Wachtwoord vergeten?
+
+  # devise/passwords/new
+  send_instructions: Stuur mij een link
+
+  # devise/passwords/edit
+  change_password: Wachtwoord wijzigen
+  new_password: Nieuw wachtwoord
+  new_password_confirmation: Nieuw wachtwoord bevestigen
+
+  # devise/confirmations/new
+  resend: Activatielink opnieuw versturen
+
+  # devise/registrations/new
+  sign_up: Registreren
+
+  # Admin menu
+  discussions: Discussies
+  content: Content
+  communities: Forums
+  app_store: App Store
+  search: Zoeken
+
+  # Admin main/statuses
+  support_pipeline: Support Pipeline
+  new: Nieuw
+  active: Actief
+  open: Open
+  mine: Mijn
+  pending: Wachtend
+  closed: Opgelost
+  spam: Spam
+  trash: Prullenbak
+  discussion_managment: Discussies Beheren
+  open_new_discussion: Nieuwe Discussie
+  assigned_to: "Toegewezen aan%{agent}"
+  unassigned: Niet toegewezen
+  private: "Privé"
+  public: Openbaar
+  save_changes: Bijwerken
+  #merge: Merge
+  #merge_confirm: Are you sure you want to merge these tickets?
+
+  # Discussion controls
+  change_status: Status Wijzigen
+  status: &status Status
+  mark_closed: Als opgelost markeren
+  reopen: Heropenen
+  mark_spam: Als spam markeren
+  mark_new: Als nieuw markeren
+  assign_agent: &assign_agent Aan medewerker toewijzen
+  # tag_with: &tag_with Tag Ticket
+  selected_messages:
+    one: "1 bericht geselecteerd"
+    two: "2 berichten geselecteerd"
+    other: "%{count} berichten geselecteerd"
+
+  # Discussion messages
+  reopen_message: "Deze vraag is door de helpdesk heropend"
+  closed_message: "Deze vraag is door de helpdesk gesloten."
+  trash_message: "Deze vraag is verwijderd."
+  assigned_message: "Discussie overgedragen aan %{assigned_to}."
+  # assigned_group: "This ticket has been assigned to %{assigned_group}."
+  # converted_to_ticket: "This discussion was converted to a private ticket."
+  # converted_to_topic: "This ticket was converted to an open discussion and moved to %{forum_name}."
+  # tagged_with: "This ticket was tagged with %{tagged_with}"
+  # notes_hidden: "There are %{hidden_notes} internal notes for this ticket. You can view them by clicking anywhere in this note!"
+
+  # User Admin
+  # users: Users
+  # account: Account
+  contact_info: Contact
+  social_info: Social Media
+  edit_user: Gebruiker bewerken
+#  delete_user: Delete User
+  work_phone: Telefoon (zakelijk)
+  cell_phone: Mobiel
+  # delete_user: "Delete User"
+  # scrub_user: "Anonymize User"
+  # anonymize_user_warning: "Are you sure you want to anonymize %{user_name}? This will permanently anonymize the user's personal data but retain all of their tickets and public posts."
+  # delete_user_warning: "Are you sure you want to delete %{user_name}? This will permanently remove the user and all of their tickets, posts, replies and forum topics."
+
+  # Priorities
+  # select_priority: &priority Select Priority
+  # vip_priority: VIP
+  # very_high_priority: Very High
+  # high_priority: High
+  # normal_priority: Normal
+  # low_priority: Low
+
+  # User search results
+  users_found:
+    one: "1 gebruiker gevonden met de naam %{query}"
+    other: "%{count} gebruikers gevonden met de naam %{query}"
+
+  # Invite users
+  # invite_users: "Invite New Users"
+  # invite_emails: "Email Addresses"
+  # invite_emails_placeholder: "Type one or more email addresses to send an invitation to"
+  # invite_message: "Message"
+  # invite_message_placeholder: "An optional message that will be sent to the new users"
+  # invite_role: "Role for Invited Users"
+  # send_invite: "Send Invite"
+
+  # Discussion View
+  asked_a_question: "%{user_name} vroeg..."
+  replied: "%{user_name} antwoordde..."
+  posted_note: "%{user_name} heeft een interne notitie toegevoegd..."
+  type_reply: Typ hier je antwoord of selecteer een van de standaard antwoorden
+  select_common: Standaard antwoord selecteren
+  reply: Beantwoorden
+  internal_note: Interne Notitie
+  # mark_as_resolved: Mark as resolved
+  upvote:
+    one: "Stem op dit antwoord | %{count}"
+    other: "Stem op dit antwoord | %{count}"
+
+  # Content
+  new_category: Nieuwe Categorie
+  new_content: Nieuwe Content
+  front_page_categories: "Front Page Categorieën"
+  other_categories: "Andere Categorieën"
+  edit: Bewerken
+  edit_category: Categorie Bewerken
+  select_category: Categorie Selecteren
+  delete: Verwijderen
+  view_and_edit: "Content Bekijken/bewerken"
+  delete_confirm: "Bevestig dat je deze content wilt VERWIJDEREN!"
+  select_icon_helptext: "Selecteer een icoon voor deze categorie (optioneel)"
+  translate: "Artikel vertalen"
+  view_on_site: "Bekijk op de website"
+  written_on: "Geschreven op %{date_written}"
+  content_last_updated: "Laatst geüpdatet op %{date_updated}"
+  featured_content: "Uitgelicht"
+  draft_content: "Concept"
+  published_content: "Gepubliceerd"
+  additional_settings: "Aamvullende instellingen"
+  content_status: "Content Status"
+  # convert_content: 'Turn post into content'
+  # upload_image: 'Upload Image'
+  # new_discussion: 'Create new discussion from this'
+  # new_discussion_post: 'Discussion #%{topic_id} was created from this one'
+  # new_discussion_topic_title: 'Split from #%{original_id}-%{original_name}'
+  # change_owner_note: 'The creator of this topic was changed from %{old} to %{new}'
+
+  # Communities
+  new_community: Nieuw forum
+  create_new_community: Nieuw forum aanmaken
+  # layout_select: Select Format
+  # layout_table: Table
+  # layout_grid: Grid
+  # layout_qna: Q&A
+
+  # Mail messages
+  new_user_subject: "Welcome to %{site_name}"
+  hello: "Hallo %{user_name}"
+  thank_you: "Bedankt!"
+  new_user: "Bedankt voor je bericht! We hebben je vraag ontvangen en onze helpdesk zal hier zo snel mogelijk op antwoorden."
+  account_generated: "Er is een helpdesk account voor je aangemaakt. Gebruik de volgende link om in te loggen:"
+  above_this_line: "Schrijf je antwoord boven deze lijn."
+  message_id: "Vraag ID"
+  message_response: "Het volgende bericht is geplaatst als antwoord op je vraag:"
+  view_online: "Bekijk dit bericht online:"
+
+  # settings
+  # settings: "Settings"
+  # general: "General"
+  # design: "Design"
+  # international: "International"
+  # widget: "Embeddable Widget"
+  # common_replies: "Common Replies"
+  # integrations: "Integrations"
+
+  # Keyboard Shortcuts
+  # shortcut_then: "then"
+  # listing_views: "Listing views"
+  # keyboard_shortcuts: "Keyboard Shortcuts"
+  # show_new_tickets: "Show new tickets"
+  # show_all_tickets: "Show all tickets"
+  # show_open_tickets: "Show open tickets"
+  # show_tickets_assigned_to_you: "Show tickets assigned to you"
+  # show_pending_tickets_assigned_to_you: "Show pending tickets assigned to you"
+  # show_closed_tickets: "Show closed tickets"
+  # search_for_tickets: "Search for tickets"
+  # viewing_tickets: "View tickets"
+  # select_previous_ticket: "Select previous ticket"
+  # select_next_ticket: "Select next ticket"
+  # view_selected_ticket: "View selected ticket"
+  # jump_to_a_specific_ticket_number: "Jump to a specific ticket number"
+  # ticket_actions: "Ticket actions"
+  # assign_the_ticket: "Assign ticket"
+  # move_the_ticket: "Move ticket"
+  # expand_the_ticket_thread: "Expand ticket thread"
+  # reply_to_the_ticket: "Reply to the ticket"
+  # add_an_internal_note: "Add an internal note"
+  # change_ticket_status: "Change ticket status"
+  # associate_with_a_group: "Associate with a group"
+  # ticket_status: "Ticket status"
+  # mark_resolved: "Mark as resolved"
+  # reopen_ticket: "Reopen ticket"
+
+  activerecord:
+    attributes:
+      user:
+        email: E-mail
+        password: Wachtwoord
+        name: Naam
+        company: Bedrijf
+        work_phone: Mobiel (Zakelijk)
+        cell_phone: Mobiel
+        city: stad
+        state: Staat
+        # signature: Signature
+      topic:
+        name: Onderwerp
+      post:
+        kind: Soort
+      category:
+        name: Naam
+        icon: Icoon
+        keywords: Zoekwoorden
+        title_tag: Title Tag
+        meta_description: Meta Description
+        front_page: Front Page
+        active: Actief
+      doc:
+        title: Titel
+        meta_description: Meta Description
+        title_tag: Title Tag
+        keywords: Zoekwoorden
+        category_id: Categorie
+        active: Status
+        front_page: Uitlichten op de homepage?
+      forum:
+        name: Naam
+        description: Beschrijving
+        private: "Privé"
+        # layout: Layout
+        # allow_topic_voting: Allow topic voting?
+        # allow_post_voting: Allow post voting?
+
+    helpers:
+      submit:
+        topic:
+          create: Start Nieuwe discussie
+        post:
+          create:
+
+  breadcrumbs:
+    application:
+      root: *root
+    categories:
+      root: *root
+    docs:
+      root: *root
+    forums:
+      root: *root
+    locales:
+      root: *root
+    topics:
+      root: *root
+    posts:
+      root: *root
+    result:
+      root: *root
+  helpers:
+    actions: "Acties"
+    links:
+      back: "Terug"
+      cancel: "Annuleren"
+      confirm: "Weet je het zeker?"
+      destroy: "Verwijderen"
+      new: "Nieuw"
+      edit: "Bewerken"
+    titles:
+      edit: "%{model} bewerken"
+      save: "%{model} opslaan"
+      new: "%{model} aanmaken"
+      delete: "%{model} verwijderen"
+
+  number:
+    human:
+      decimal_units:
+        format: "%n%u"
+        units:
+          unit: ""
+          thousand: k
+          million: M
+          billion: B
+          trillion: T
+          quadrillion: Q
