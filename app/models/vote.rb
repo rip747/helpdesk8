@@ -11,13 +11,12 @@
 #  updated_at    :datetime         not null
 #
 
-class Vote < ActiveRecord::Base
-
-  belongs_to :voteable, :polymorphic => true
+class Vote < ApplicationRecord
+  belongs_to :voteable, polymorphic: true
   belongs_to :user
   after_create :increment_points_cache
 
-  validates :voteable_id, uniqueness: { scope: [:user_id, :voteable_type] }
+  validates :voteable_id, uniqueness: { scope: [ :user_id, :voteable_type ] }
 
   protected
 
@@ -25,6 +24,4 @@ class Vote < ActiveRecord::Base
     votable_class = self.class.const_get(self.voteable_type.to_sym)
     votable_class.update_counters(self.voteable_id, points: self.points)
   end
-
-
 end

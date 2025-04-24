@@ -19,8 +19,7 @@
 #  visibility       :string           default("all")
 #
 
-class Category < ActiveRecord::Base
-
+class Category < ApplicationRecord
   include SentenceCase
 
   has_many :docs
@@ -30,24 +29,24 @@ class Category < ActiveRecord::Base
   acts_as_taggable_on :teams
 
   translates :name, :keywords, :title_tag, :meta_description, versioning: :paper_trail
-  globalize_accessors #:locales => I18n.available_locales, :attributes => [:name, :keywords, :title_tag, :meta_description]
+  globalize_accessors # :locales => I18n.available_locales, :attributes => [:name, :keywords, :title_tag, :meta_description]
 
 
   PUBLIC_VIEWABLE   = %w[all public]
   INTERNAL_VIEWABLE = %w[all internal]
-  SYSTEM_RESOURCES = ["Common Replies", "Email templates"]
+  SYSTEM_RESOURCES = [ "Common Replies", "Email templates" ]
 
-  scope :alpha, -> { order('name ASC') }
+  scope :alpha, -> { order("name ASC") }
   scope :active, -> { where(active: true) }
-  scope :main, -> { where(section: 'main') }
+  scope :main, -> { where(section: "main") }
   scope :ordered, -> { rank(:rank) }
   scope :featured, -> { where(front_page: true) }
   scope :unfeatured, -> { where(front_page: false) }
   scope :publicly, -> { where(visibility: PUBLIC_VIEWABLE) }
   scope :internally, -> { where(visibility: INTERNAL_VIEWABLE) }
-  scope :only_internally, -> { where(visibility: 'internal') }
+  scope :only_internally, -> { where(visibility: "internal") }
   scope :without_system_resource, -> { where.not(name: SYSTEM_RESOURCES)  }
-  after_commit :rebuild_search, only: [:update, :destroy]
+  after_commit :rebuild_search, only: [ :update, :destroy ]
 
   include RankedModel
   ranks :rank
@@ -78,9 +77,9 @@ class Category < ActiveRecord::Base
     RebuildSearchJob.perform_later
   end
 
-  def self.reorganize(structure, parent_id=nil, parent_rank=0)
+  def self.reorganize(structure, parent_id = nil, parent_rank = 0)
     logger.info structure
-    structure.each_with_index do |s,i|
+    structure.each_with_index do |s, i|
       category = Category.find(s[1]["id"])
       category.rank = parent_rank+i+1
       category.parent_id = parent_id
@@ -88,5 +87,4 @@ class Category < ActiveRecord::Base
       Category.reorganize(s[1]["children"], category.id, category.rank+100000) if s[1]["children"].present?
     end
   end
-
 end

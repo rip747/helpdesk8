@@ -15,7 +15,7 @@
 #  completed_at          :datetime
 #
 
-class Import < ActiveRecord::Base
-	serialize :error_log, Array
-	serialize :imported_ids, Array
+class Import < ApplicationRecord
+  serialize :error_log, Array
+  serialize :imported_ids, Array
 end

@@ -11,8 +11,6 @@
 #  updated_at :datetime         not null
 #
 
-class Image < ActiveRecord::Base
-
+class Image < ApplicationRecord
   mount_uploader :file, ImageUploader
-
 end

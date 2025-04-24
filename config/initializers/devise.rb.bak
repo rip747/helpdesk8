@@ -1,17 +1,16 @@
 # Use this hook to configure devise mailer, warden hooks and so forth.
 # Many of these configuration options can be set straight in your model.
 
-require 'devise/custom_failure'
+# require "devise/custom_failure"
 Devise.setup do |config|
+  # This sets up a cookie to generate the above_header with javascript
 
-  #This sets up a cookie to generate the above_header with javascript
-
-  Warden::Manager.after_set_user do |user,auth,_opts|
+  Warden::Manager.after_set_user do |user, auth, _opts|
     auth.cookies[:signed_in] = 1
     auth.cookies[:name] = user.name
   end
 
-  Warden::Manager.before_logout do |_user,auth,_opts|
+  Warden::Manager.before_logout do |_user, auth, _opts|
     auth.cookies.delete :signed_in
     auth.cookies.delete :name
   end
@@ -20,7 +19,7 @@ Devise.setup do |config|
   # The secret key used by Devise. Devise uses this key to generate
   # random tokens. Changing this key will render invalid all existing
   # confirmation, reset password and unlock tokens in the database.
-  config.secret_key = 'fe1d751b902401b7c9ea3c15630a9a9946ba282064dd99cb78a17519f84458ee4a0a3dfc2adda9d7a0c7451e836d788379b185f80a2052456a595e1bddc60c94'
+  config.secret_key = "fe1d751b902401b7c9ea3c15630a9a9946ba282064dd99cb78a17519f84458ee4a0a3dfc2adda9d7a0c7451e836d788379b185f80a2052456a595e1bddc60c94"
 
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in Devise::Mailer,
@@ -29,13 +28,13 @@ Devise.setup do |config|
   config.mailer_sender = Settings.from_email
 
   # Configure the class responsible to send e-mails.
-  config.mailer = 'DeviseMailer'
+  config.mailer = "DeviseMailer"
 
   # ==> ORM configuration
   # Load and configure the ORM. Supports :active_record (default) and
   # :mongoid (bson_ext recommended) by default. Other ORMs may be
   # available as additional gems.
-  require 'devise/orm/active_record'
+  require "devise/orm/active_record"
 
   # ==> Configuration for any authentication mechanism
   # Configure which keys are used when authenticating a user. The default is
@@ -93,7 +92,7 @@ Devise.setup do |config|
   # Notice that if you are skipping storage for all authentication paths, you
   # may want to disable generating routes to Devise's sessions controller by
   # passing skip: :sessions to `devise_for` in your config/routes.rb
-  config.skip_session_storage = [:http_auth]
+  config.skip_session_storage = [ :http_auth ]
 
   # By default, Devise cleans up the CSRF token on authentication to
   # avoid CSRF token fixation attacks. This means that, when using AJAX
@@ -296,10 +295,10 @@ Devise.setup do |config|
   # ==> OmniAuth
   # Add a new OmniAuth provider. Check the wiki for more information on setting
   # up on your models and hooks.
-#  config.omniauth :google_oauth2, 'APP_ID', 'APP_SECRET', scope: 'user:email'
+  #  config.omniauth :google_oauth2, 'APP_ID', 'APP_SECRET', scope: 'user:email'
   unless Settings.omniauth.nil? || Settings.omniauth.providers.nil?
     Settings.omniauth.providers.each do |provider|
-      config.omniauth provider[0], provider[1].id, provider[1].secret#, scope: 'user:email'
+      config.omniauth provider[0], provider[1].id, provider[1].secret# , scope: 'user:email'
     end
   end
   # ==> Warden configuration

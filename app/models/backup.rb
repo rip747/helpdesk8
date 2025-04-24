@@ -11,6 +11,6 @@
 #  updated_at :datetime         not null
 #
 
-class Backup < ActiveRecord::Base
-	belongs_to :user
+class Backup < ApplicationRecord
+  belongs_to :user
 end

@@ -40,6 +40,15 @@ gem "thruster", require: false
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
+# gems foe backwards compatability
+gem "acts-as-taggable-on"
+gem "config"
+gem "rails-settings-cached", "~> 0.5.0"
+gem "devise", "<= 5.0.0"
+gem "devise-i18n"
+gem "devise-bootstrap-views"
+gem "devise_invitable"
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"

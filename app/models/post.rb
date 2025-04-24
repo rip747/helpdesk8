@@ -17,8 +17,7 @@
 #  raw_email   :text
 #
 
-class Post < ActiveRecord::Base
-
+class Post < ApplicationRecord
   # This is used to skip the callbacks when importing (ie. we don't want to send
   # emails to everyone while importing)
   attr_accessor :importing
@@ -26,13 +25,13 @@ class Post < ActiveRecord::Base
   attr_accessor :reply_id
 
   # Whitelist tags and attributes that are allowed in posts
-  ALLOWED_TAGS = %w(strong em a p br b img ul li)
-  ALLOWED_ATTRIBUTES = %w(href src class style width height target)
+  ALLOWED_TAGS = %w[strong em a p br b img ul li]
+  ALLOWED_ATTRIBUTES = %w[href src class style width height target]
 
   belongs_to :topic, counter_cache: true, touch: true
   belongs_to :user, touch: true
-  has_many :votes, :as => :voteable, dependent: :delete_all
-  has_attachments :screenshots, accept: [:jpg, :png, :gif, :pdf]
+  has_many :votes, as: :voteable, dependent: :delete_all
+  has_attachments :screenshots, accept: [ :jpg, :png, :gif, :pdf ]
   has_many :flags
   mount_uploaders :attachments, AttachmentUploader
 
@@ -46,13 +45,13 @@ class Post < ActiveRecord::Base
   before_save :reject_admin_email_from_cc
   after_save  :update_topic_cache
 
-  scope :all_by_topic, -> (topic) { where("topic_id = ?", topic).order('updated_at ASC').include(user) }
+  scope :all_by_topic, ->(topic) { where("topic_id = ?", topic).order("updated_at ASC").include(user) }
   scope :active, -> { where(active: true) }
-  scope :ispublic, -> { where.not(kind: 'note') }
-  scope :chronologic, -> { order('created_at ASC') }
-  scope :reverse, -> { order('created_at DESC') }
-  scope :by_votes, -> { order('points DESC')}
-  scope :notes, -> { where(kind: 'note') }
+  scope :ispublic, -> { where.not(kind: "note") }
+  scope :chronologic, -> { order("created_at ASC") }
+  scope :reverse, -> { order("created_at DESC") }
+  scope :by_votes, -> { order("points DESC") }
+  scope :notes, -> { where(kind: "note") }
 
   def self.new_with_cc(topic)
     if topic.posts.size == 0
@@ -65,25 +64,24 @@ class Post < ActiveRecord::Base
     end
   end
 
-  #updates the last post date for both the forum and the topic
-  #updates the waiting on cache
+  # updates the last post date for both the forum and the topic
+  # updates the waiting on cache
   def update_waiting_on_cache
-
     status = self.topic.current_status
     waiting_on = self.topic.waiting_on
 
-    #unless status == 'closed' || status == 'trash'
-    unless status == 'trash'
-      logger.info('private message, update waiting on cache')
+    # unless status == 'closed' || status == 'trash'
+    unless status == "trash"
+      logger.info("private message, update waiting on cache")
       status = self.topic.current_status
       if self.user && self.user.is_agent?
-        logger.info('waiting on user')
+        logger.info("waiting on user")
         waiting_on = "user"
         status = "open"
       else
-        logger.info('waiting on admin')
+        logger.info("waiting on admin")
         waiting_on = "admin"
-        status = "pending" unless ['new','trash','spam'].include? self.topic.current_status
+        status = "pending" unless [ "new", "trash", "spam" ].include? self.topic.current_status
       end
     end
 
@@ -91,9 +89,9 @@ class Post < ActiveRecord::Base
     self.topic.forum.update(last_post_date: Time.current)
   end
 
-  #updates cache of post content used in search
+  # updates cache of post content used in search
   def update_topic_cache
-    unless self.kind == 'note'
+    unless self.kind == "note"
       current_cache = self.topic.post_cache
       self.topic.update(post_cache: "#{current_cache} #{self.body}")
     end
@@ -104,7 +102,7 @@ class Post < ActiveRecord::Base
   def assign_on_reply
     # don't assign if this is the first post (indicates an admin created ticket)
     return if self.topic.posts.size == 1
-    
+
     if self.topic.assigned_user_id.nil?
       self.topic.assigned_user_id = self.user.is_agent? ? self.user_id : nil
     end
@@ -159,12 +157,12 @@ class Post < ActiveRecord::Base
   def bccs
     bccs = []
     unless bcc.nil?
-      bccs += bcc&.split(',').collect{|b| b.strip}
+      bccs += bcc&.split(",").collect { |b| b.strip }
     end
-    unless AppSettings['settings.global_bcc'].nil? || AppSettings['settings.global_bcc'].blank?
-      bccs += AppSettings['settings.global_bcc']&.split(',').collect{|b| b.strip}
+    unless AppSettings["settings.global_bcc"].nil? || AppSettings["settings.global_bcc"].blank?
+      bccs += AppSettings["settings.global_bcc"]&.split(",").collect { |b| b.strip }
     end
-    return bccs
+    bccs
   end
 
   private
@@ -175,6 +173,6 @@ class Post < ActiveRecord::Base
 
   def reject_admin_email_from_cc
     return if self.cc.nil?
-    self.cc = self.cc.split(",").delete_if { |c| c.include?(AppSettings['email.admin_email'])}.join(",")
+    self.cc = self.cc.split(",").delete_if { |c| c.include?(AppSettings["email.admin_email"]) }.join(",")
   end
 end

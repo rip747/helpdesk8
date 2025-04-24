@@ -24,8 +24,7 @@
 #  attachments      :string           default([]), is an Array
 #
 
-class Doc < ActiveRecord::Base
-
+class Doc < ApplicationRecord
   include SentenceCase
 
   belongs_to :category
@@ -40,13 +39,13 @@ class Doc < ActiveRecord::Base
   validates :category_id, presence: true
 
   include PgSearch::Model
-  multisearchable against: [:title_with_translations, :body_with_translations, :keywords_with_translations],
-    :if => lambda { |record| record.category.present? && record.category.publicly_viewable? && record.active && record.category.active? }
+  multisearchable against: [ :title_with_translations, :body_with_translations, :keywords_with_translations ],
+    if: lambda { |record| record.category.present? && record.category.publicly_viewable? && record.active && record.category.active? }
 
   pg_search_scope :agent_assist,
-              against: [:title, :body, :keywords],
+              against: [ :title, :body, :keywords ],
               associated_against: {
-                doc_translations: [:title, :body, :keywords]
+                doc_translations: [ :title, :body, :keywords ]
               }
 
   has_paper_trail
@@ -55,7 +54,7 @@ class Doc < ActiveRecord::Base
   globalize_accessors
 
   paginates_per 25
-  has_attachments :screenshots, accept: [:jpg, :jpeg, :png, :gif, :pdf]
+  has_attachments :screenshots, accept: [ :jpg, :jpeg, :png, :gif, :pdf ]
 
   include RankedModel
   ranks :rank
@@ -63,13 +62,13 @@ class Doc < ActiveRecord::Base
   acts_as_taggable
   acts_as_taggable_on :tags
 
-  scope :alpha, -> { order('title ASC') }
+  scope :alpha, -> { order("title ASC") }
   scope :by_category, -> { order(:category_id) }
-  scope :in_category, -> (cat) { where(category_id: cat).order('front_page DESC, rank ASC') }
+  scope :in_category, ->(cat) { where(category_id: cat).order("front_page DESC, rank ASC") }
   scope :ordered, -> { rank(:rank) }
   scope :active, -> { where(active: true) }
-  scope :recent, -> { order('last_updated DESC').limit(5) }
-  scope :all_public_popular, -> { where(active: true).order('points DESC').limit(6) }
+  scope :recent, -> { order("last_updated DESC").limit(5) }
+  scope :all_public_popular, -> { where(active: true).order("points DESC").limit(6) }
   scope :replies, -> { where(category_id: 1) }
   scope :publicly, -> { joins(:category).where(categories: { visibility: %w[all public] }) }
 
@@ -109,5 +108,4 @@ class Doc < ActiveRecord::Base
   def keywords_with_translations
     self.doc_translations.collect { |doc| doc.keywords }.join(" ")
   end
-
 end

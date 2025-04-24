@@ -60,19 +60,19 @@
 #  priority               :string           default("normal")
 #
 
-class User < ActiveRecord::Base
+class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable
   devise :invitable, :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
-         :omniauthable, :omniauth_providers => Devise.omniauth_providers
+         :omniauthable, omniauth_providers: Devise.omniauth_providers
 
   INVALID_NAME_CHARACTERS = /\A('|")|\d|('|")\z/
 
   # Add preferences to user model
   include RailsSettings::Extend
 
-  TEMP_EMAIL_PREFIX = 'change@me'
+  TEMP_EMAIL_PREFIX = "change@me"
 
   attr_accessor :opt_in
 
@@ -84,7 +84,7 @@ class User < ActiveRecord::Base
 
   include PgSearch::Model
   pg_search_scope :user_search,
-                  against: [:name, :login, :email, :company, :account_number, :home_phone, :work_phone, :cell_phone]
+                  against: [ :name, :login, :email, :company, :account_number, :home_phone, :work_phone, :cell_phone ]
 
   paginates_per 15
 
@@ -97,7 +97,7 @@ class User < ActiveRecord::Base
   has_many :backups, dependent: :delete_all
   has_many :api_keys, dependent: :destroy
 
-  has_attachment  :avatar, accept: [:jpg, :png, :gif]
+  has_attachment :avatar, accept: [ :jpg, :png, :gif ]
   is_gravtastic
 
   after_invitation_accepted :set_role_on_invitation_accept
@@ -108,15 +108,15 @@ class User < ActiveRecord::Base
   ROLES = %w[admin agent editor user]
 
   # TODO: Will want to refactor this using .or when upgrading to Rails 5
-  scope :admins, -> { where('admin = ? OR role = ?',true,'admin').order('name asc') }
-  scope :agents, -> { where('admin = ? OR role = ? OR role = ?',true,'admin','agent').order('name asc') }
-  scope :customers, -> { where('admin = ? and role = ?',false,'user').where.not(role: ['agent','admin','editor']).where.not(id: 2).order('name asc') }
-  scope :team, -> { where('admin = ? OR role = ? OR role = ? OR role = ?',true,'admin','agent','editor').order('name asc') }
-  scope :active, -> { where(active: true)}
-  scope :by_role, -> (role) { where(role: role) }
-  scope :active_first, -> { order('updated_at desc') }
-  scope :alpha, -> { order('name asc') }
-  scope :available, -> { where(status: 'available') }
+  scope :admins, -> { where("admin = ? OR role = ?", true, "admin").order("name asc") }
+  scope :agents, -> { where("admin = ? OR role = ? OR role = ?", true, "admin", "agent").order("name asc") }
+  scope :customers, -> { where("admin = ? and role = ?", false, "user").where.not(role: [ "agent", "admin", "editor" ]).where.not(id: 2).order("name asc") }
+  scope :team, -> { where("admin = ? OR role = ? OR role = ? OR role = ?", true, "admin", "agent", "editor").order("name asc") }
+  scope :active, -> { where(active: true) }
+  scope :by_role, ->(role) { where(role: role) }
+  scope :active_first, -> { order("updated_at desc") }
+  scope :alpha, -> { order("name asc") }
+  scope :available, -> { where(status: "available") }
 
   def set_role_on_invitation_accept
     self.role = self.role.presence || "agent"
@@ -136,7 +136,7 @@ class User < ActiveRecord::Base
   # change doc ownership
   def permanently_destroy
     return if self.is_admin?
-    return if self.id == 2 #prevent the system user from being destroyed
+    return if self.id == 2 # prevent the system user from being destroyed
 
     DeleteUserJob.perform_later(self.id)
   end
@@ -144,7 +144,7 @@ class User < ActiveRecord::Base
   # Removes or anonymizes associated records
   def scrub
     return if self.is_admin?
-    return if self.id == 2 #prevent the system user from anonymized
+    return if self.id == 2 # prevent the system user from anonymized
 
     # unassign from any topics assigned to
     self.unassign_all
@@ -159,9 +159,9 @@ class User < ActiveRecord::Base
 
     # anonymize own attributes
     self.update!(
-      login: 'anon',
-      name: 'Anonymous User',
-      role: 'user',
+      login: "anon",
+      name: "Anonymous User",
+      role: "user",
       signature: nil,
       home_phone: nil,
       work_phone: nil,
@@ -184,11 +184,11 @@ class User < ActiveRecord::Base
       encrypted_password: SecureRandom.hex(24),
       account_number: nil,
       active: false,
-      email: 'change@me-' + SecureRandom.hex(5) + '.anonymous'
+      email: "change@me-" + SecureRandom.hex(5) + ".anonymous"
     )
 
     # anonymize cached attributes (topics)
-    self.topics.update_all(user_name: 'Anonymized User')
+    self.topics.update_all(user_name: "Anonymized User")
 
     # rebuild index
   end
@@ -205,21 +205,21 @@ class User < ActiveRecord::Base
   end
 
   # Is this user editable by the current logged in agent?
-  def can_be_edited? current_user
+  def can_be_edited?(current_user)
     return true if current_user.is_admin?
     !self.is_agent?
   end
 
   def self.notifiable_on_public
-    agents.where(notify_on_public: true).reorder('id asc')
+    agents.where(notify_on_public: true).reorder("id asc")
   end
 
   def self.notifiable_on_private
-    agents.where(notify_on_private: true).reorder('id asc')
+    agents.where(notify_on_private: true).reorder("id asc")
   end
 
   def self.notifiable_on_reply
-    agents.where(notify_on_reply: true).reorder('id asc')
+    agents.where(notify_on_reply: true).reorder("id asc")
   end
 
   def active_assigned_count
@@ -261,9 +261,9 @@ class User < ActiveRecord::Base
       find_or_create_by(provider: auth.provider, uid: auth.uid) do |u|
         u.email = auth.info.email.present? ? auth.info.email : u.temp_email(auth)
         u.name = auth.info.name.present? ? auth.info.name : "Name Missing"
-        u.role = 'user'
+        u.role = "user"
         u.thumbnail = auth.info.image
-        u.password = Devise.friendly_token[0,20]
+        u.password = Devise.friendly_token[0, 20]
       end
     end
   end
@@ -288,7 +288,7 @@ class User < ActiveRecord::Base
 
   # evaluates to true if they are a priority (high/vip) user
   def priority?
-    self.priority == 'high' || self.priority == 'vip'
+    self.priority == "high" || self.priority == "vip"
   end
 
   # NOTE: Could have user AR Enumerables for this, but the field was already in the database as a string
@@ -296,25 +296,25 @@ class User < ActiveRecord::Base
   # Utility methods for checking the role of an admin:
 
   def is_admin?
-    self.role == 'admin'
+    self.role == "admin"
   end
 
   def is_agent?
-    %w( agent admin ).include?(self.role)
+    %w[ agent admin ].include?(self.role)
   end
 
   def is_editor?
-    %w( editor agent admin ).include?(self.role)
+    %w[ editor agent admin ].include?(self.role)
   end
 
   def self.bulk_invite(emails, message, role)
-    #below line merge comma saperated emails as well as emails saperated by new lines
-    emails = emails.each_line.reject { |l| l =~ /^\s+$/ }.map { |l| l.strip.split(', ') }.flatten
+    # below line merge comma saperated emails as well as emails saperated by new lines
+    emails = emails.each_line.reject { |l| l =~ /^\s+$/ }.map { |l| l.strip.split(", ") }.flatten
 
     emails.each do |email|
-      is_valid_email = email.match('^.+@.+$')
+      is_valid_email = email.match("^.+@.+$")
       if is_valid_email
-        User.invite!({email: email}) do |user|
+        User.invite!({ email: email }) do |user|
           user.invitation_message = message
           user.name = "Invited User: #{email}"
           user.role = role
@@ -324,7 +324,7 @@ class User < ActiveRecord::Base
     end
   end
 
-  #when using deliver_later attr_accessor :message becomes nil on mailer view
+  # when using deliver_later attr_accessor :message becomes nil on mailer view
   def send_devise_notification(notification, *args)
     devise_mailer.send(notification, self, *args).deliver_later
   end
@@ -339,7 +339,7 @@ class User < ActiveRecord::Base
     "You are not allowed to sign in!"
   end
 
-  def self.register email, user_name
+  def self.register(email, user_name)
     # this method is very similar to email_processor#create_user
     # actually it was copyied from there.
     # it should create an issue to properly refactor and
@@ -365,7 +365,6 @@ class User < ActiveRecord::Base
   private
 
   def reject_invalid_characters_from_name
-    self.name = name.gsub(INVALID_NAME_CHARACTERS, '') if !!name.match(INVALID_NAME_CHARACTERS)
+    self.name = name.gsub(INVALID_NAME_CHARACTERS, "") if !!name.match(INVALID_NAME_CHARACTERS)
   end
-
 end
