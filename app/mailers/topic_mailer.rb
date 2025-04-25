@@ -1,5 +1,5 @@
 class TopicMailer < ApplicationMailer
-  add_template_helper(ApplicationHelper)
+  helper(ApplicationHelper)
 
   def new_ticket(topic_id)
     @topic = Topic.find(topic_id)
@@ -16,5 +16,4 @@ class TopicMailer < ApplicationMailer
       subject: "[#{AppSettings['settings.site_name']}] ##{@topic.id}-#{@topic.name}"
       )
   end
-
 end

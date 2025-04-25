@@ -1,9 +1,9 @@
 class UserMailer < ApplicationMailer
-  add_template_helper(ApplicationHelper)
-  layout 'mailer'
+  helper(ApplicationHelper)
+  layout "mailer"
 
   def new_user(user_id, token)
-    return unless (AppSettings['settings.welcome_email'] == "1" || AppSettings['settings.welcome_email'] == true)
+    return unless AppSettings["settings.welcome_email"] == "1" || AppSettings["settings.welcome_email"] == true
     @user = User.find(user_id)
 
     # Do not send to temp email addresses
@@ -15,8 +15,7 @@ class UserMailer < ApplicationMailer
     mail(
       to: email_with_name,
       from: %("#{AppSettings['settings.site_name']}" <#{AppSettings['email.admin_email']}>),
-      subject: t('new_user_subject', site_name: AppSettings['settings.site_name'])
+      subject: t("new_user_subject", site_name: AppSettings["settings.site_name"])
       )
   end
-
 end
