@@ -1,0 +1,1 @@
+Implement full text search with sqlite/ Replacement for the PgSearch gem
