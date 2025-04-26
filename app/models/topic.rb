@@ -300,14 +300,14 @@ class Topic < ApplicationRecord
 
 
   def active_storeage_valiation
-    return unless documents.attached?
+    return unless screenshots.attached?
 
     allowed_types = %w[image/jpeg image/png image/gif application/pdf text/plain application/msword application/vnd.openxmlformats-officedocument.wordprocessingml.document application/vnd.ms-powerpoint application/vnd.openxmlformats-officedocument.presentationml.presentation application/vnd.ms-excel application/vnd.openxmlformats-officedocument.spreadsheetml.sheet application/zip]
 
-    documents.each do |document|
-      unless document.content_type.in?(allowed_types)
-        document.purge # Remove invalid file
-        errors.add(:documents, "Only the following are allowed: jpg, png, gif, pdf, txt, rtf, doc, docx, ppt, pptx, xls, xlsx, zip")
+    screenshots.each do |screenshot|
+      unless screenshot.content_type.in?(allowed_types)
+        screenshot.purge # Remove invalid file
+        errors.add(:screenshots, "Only the following are allowed: jpg, png, gif, pdf, txt, rtf, doc, docx, ppt, pptx, xls, xlsx, zip")
       end
     end
   end

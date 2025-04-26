@@ -9,9 +9,9 @@
 # Users
 user_admin = User.create!(
   name: 'Admin',
-  login:'admin',
+  login: 'admin',
   email: 'admin@test.com',
-  password:'12345678',
+  password: '12345678',
   role: 'admin',
   thumbnail: '',
   medium_image: '',
@@ -21,9 +21,9 @@ user_admin = User.create!(
 
 user_system = User.create!(
   name: 'System',
-  login:'system',
+  login: 'system',
   email: 'system@test.com',
-  password:'12345678',
+  password: '12345678',
   role: 'user',
   admin: false
 )
@@ -98,24 +98,26 @@ Forum.create(
 )
 
 # Knowledgebase Categories
-Category.create(name:'Common Replies', title_tag: 'Common Agent Replies', meta_description: 'Common replies to questions (Visible only to agents)', front_page: false, active: false, visibility: 'internal')
-templates = Category.create(name:'Email templates', title_tag: 'Email Templates',  meta_description: 'Emails used by the system', front_page: false, active: false, visibility: 'internal')
-Category.create(name:'Getting Started',icon: 'eye-open', title_tag: 'Getting Started',meta_description:'Learn how to get started with our solution', front_page: true)
-Category.create(name:'Top Issues',icon: 'exclamation-sign', title_tag: 'Solutions to Top Issues',meta_description:'Answers to our most frequent issues', front_page: true)
-Category.create(name:'General Questions', icon: 'question-sign', title_tag: 'Answers General Questions',meta_description:'If you have a question of a more general nature, you might find the answer here', front_page: true)
-Category.create(name:'Troubleshooting', icon: 'ok-circle', title_tag: 'Troubleshooting',meta_description:'Got a problem? Start here to learn more about solving it', front_page: true)
+Category.create(name: 'Common Replies', title_tag: 'Common Agent Replies', meta_description: 'Common replies to questions (Visible only to agents)', front_page: false, active: false, visibility: 'internal')
+templates = Category.create(name: 'Email templates', title_tag: 'Email Templates',  meta_description: 'Emails used by the system', front_page: false, active: false, visibility: 'internal')
+Category.create(name: 'Getting Started', icon: 'eye-open', title_tag: 'Getting Started', meta_description: 'Learn how to get started with our solution', front_page: true)
+Category.create(name: 'Top Issues', icon: 'exclamation-sign', title_tag: 'Solutions to Top Issues', meta_description: 'Answers to our most frequent issues', front_page: true)
+Category.create(name: 'General Questions', icon: 'question-sign', title_tag: 'Answers General Questions', meta_description: 'If you have a question of a more general nature, you might find the answer here', front_page: true)
+Category.create(name: 'Troubleshooting', icon: 'ok-circle', title_tag: 'Troubleshooting', meta_description: 'Got a problem? Start here to learn more about solving it', front_page: true)
 
+# TODO: Correct error
+# ActiveRecord::RecordInvalid: Validation failed: User must exist (ActiveRecord::RecordInvalid)
+# debugger
 # Create email header and footer tempalte
-
-templates.docs.create!(title: 'Customer_header', body: '<!-- -->')
-templates.docs.create!(title: 'Customer_footer', body:'<p style="color: #666;">
-<small>
-<strong>Powered by Helpy</strong><br>
-Get a Free Helpy Support System for your Site at
-<a href="https://helpy.io/">https://helpy.io/</a>
-</small>
-</p>
-<p style="color: #666;"><small>%ticket_link%</small></p>')
+# templates.docs.create!(title: 'Customer_header', body: '<!-- -->')
+# templates.docs.create!(title: 'Customer_footer', body: '<p style="color: #666;">
+# <small>
+# <strong>Powered by Helpy</strong><br>
+# Get a Free Helpy Support System for your Site at
+# <a href="https://helpy.io/">https://helpy.io/</a>
+# </small>
+# </p>
+# <p style="color: #666;"><small>%ticket_link%</small></p>')
 
 
 # Create first example tickets
@@ -131,12 +133,12 @@ topic = Forum.first.topics.create(
 
 topic.posts.create(
   body: '
-  Thank you so much for checking out Helpy! I have a favor to ask... If you like what 
-  we are doing with Helpy, please take a moment and give the project a star on GitHub. 
+  Thank you so much for checking out Helpy! I have a favor to ask... If you like what
+  we are doing with Helpy, please take a moment and give the project a star on GitHub.
   Take a look in the lower right corner of the Helpy UI and you will see a little icon
   showing how many stars the open source version already has.  Just click this and then
   click again on GitHub to give your star.
-  ',  
+  ',
   user_id: user_scott.id,
   kind: 'first'
 )
@@ -174,15 +176,15 @@ topic.posts.create(
   Helpy is licensed under the MIT license, which means you can do, well, pretty
   much anything you want with it, other than removing the copyright/credits. Helpy
   is an open core application, which means the core functionality is open source,
-  but there is additional functionality you can get if you purchase a license to 
+  but there is additional functionality you can get if you purchase a license to
   the enhanced version.
 
 
   <b>Support Open Source development by upgrading to Helpy Cloud</b>
 
-  This installation of Helpy can easily be upgraded to the full Helpy Cloud 
-  edition. Upgrading gets you access to our private gem server and a license to use 
-  all of the cloud tier addons which are not open source and add amazing capabilities 
+  This installation of Helpy can easily be upgraded to the full Helpy Cloud
+  edition. Upgrading gets you access to our private gem server and a license to use
+  all of the cloud tier addons which are not open source and add amazing capabilities
   like:
 
   <ul>
@@ -204,8 +206,8 @@ topic.posts.create(
 
   <b>Sponsorship Opportunities</b>
 
-  Helpy is the leading open source helpdesk on GitHub, has over 100,000 Docker installs, 
-  and has been featured on Product Hunt numerous times.  We have amassed a large audience of 
+  Helpy is the leading open source helpdesk on GitHub, has over 100,000 Docker installs,
+  and has been featured on Product Hunt numerous times.  We have amassed a large audience of
   developers, open source users, startups and CIO/CTO types.
 
   If your business sells to these types of people and you value aligning with the open
