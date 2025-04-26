@@ -15,7 +15,7 @@
 //= require best_in_place
 //= require jquery_ujs
 //= require jquery-fileupload
-//= require bootstrap-sprockets
+//= require bootstrap
 //= require turbolinks
 //= require jquery.turbolinks
 //= require js-cookie/src/js.cookie.js

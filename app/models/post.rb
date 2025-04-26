@@ -31,7 +31,11 @@ class Post < ApplicationRecord
   belongs_to :topic, counter_cache: true, touch: true
   belongs_to :user, touch: true
   has_many :votes, as: :voteable, dependent: :delete_all
-  has_attachments :screenshots, accept: [ :jpg, :png, :gif, :pdf ]
+
+  # has_attachments :screenshots, accept: [ :jpg, :png, :gif, :pdf ]
+  has_many_attached :screenshots
+  validate :active_storeage_valiation
+
   has_many :flags
   mount_uploaders :attachments, AttachmentUploader
 
@@ -49,7 +53,7 @@ class Post < ApplicationRecord
   scope :active, -> { where(active: true) }
   scope :ispublic, -> { where.not(kind: "note") }
   scope :chronologic, -> { order("created_at ASC") }
-  scope :reverse, -> { order("created_at DESC") }
+  # scope :reverse, -> { order("created_at DESC") }
   scope :by_votes, -> { order("points DESC") }
   scope :notes, -> { where(kind: "note") }
 
@@ -167,12 +171,25 @@ class Post < ApplicationRecord
 
   private
 
-    def truncate_body
-      self.body = body.truncate(10_000) unless body.blank?
-    end
+  def truncate_body
+    self.body = body.truncate(10_000) unless body.blank?
+  end
 
   def reject_admin_email_from_cc
     return if self.cc.nil?
     self.cc = self.cc.split(",").delete_if { |c| c.include?(AppSettings["email.admin_email"]) }.join(",")
+  end
+
+  def active_storeage_valiation
+    return unless documents.attached?
+
+    allowed_types = %w[image/jpeg image/png image/gif application/pdf]
+
+    documents.each do |document|
+      unless document.content_type.in?(allowed_types)
+        document.purge # Remove invalid file
+        errors.add(:documents, "Only the following are allowed: jpeg, png, gif, pdf")
+      end
+    end
   end
 end

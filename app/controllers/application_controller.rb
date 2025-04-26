@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
   around_action :set_time_zone, if: :current_user
 
-  force_ssl if: :ssl_configured?
+  # force_ssl if: :ssl_configured?
 
   def url_options
     { locale: I18n.locale, theme: params[:theme] }.merge(super)

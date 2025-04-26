@@ -174,7 +174,7 @@ Rails.application.routes.draw do
       resources :groups
       resources :tags
     end
-    resources :topics, except: [ :delete, :edit ] do
+    resources :topics, except: [ :destroy, :edit ] do
       resources :posts
     end
     resources :posts
@@ -190,12 +190,12 @@ Rails.application.routes.draw do
     root to: "dashboard#index"
   end
 
-  mount API::Base, at: "/"
-  mount GrapeSwaggerRails::Engine => "/api/v1/api_doc"
+  # mount API::Base, at: "/"
+  # mount GrapeSwaggerRails::Engine => "/api/v1/api_doc"
 
   # Receive email from Griddler
-  mount_griddler
+  # mount_griddler
 
   # Mount attachinary
-  mount Attachinary::Engine => "/attachinary"
+  # mount Attachinary::Engine => "/attachinary"
 end

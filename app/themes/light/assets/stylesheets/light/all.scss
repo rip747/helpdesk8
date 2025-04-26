@@ -3,11 +3,9 @@
 
 // Import Bootstrap
 // Note: "bootstrap-sprockets" must be imported before "bootstrap" and "bootstrap/variables"
-@import "bootstrap-sprockets";
 @import "bootstrap";
 
 // Import font-awesome
-@import "font-awesome-sprockets";
 @import "font-awesome";
 
 // Import other dependencies

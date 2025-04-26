@@ -82,9 +82,9 @@ class User < ApplicationRecord
   include Gravtastic
   mount_uploader :profile_image, ProfileImageUploader
 
-  include PgSearch::Model
-  pg_search_scope :user_search,
-                  against: [ :name, :login, :email, :company, :account_number, :home_phone, :work_phone, :cell_phone ]
+  # include PgSearch::Model
+  # pg_search_scope :user_search,
+  #                 against: [ :name, :login, :email, :company, :account_number, :home_phone, :work_phone, :cell_phone ]
 
   paginates_per 15
 
@@ -97,7 +97,10 @@ class User < ApplicationRecord
   has_many :backups, dependent: :delete_all
   has_many :api_keys, dependent: :destroy
 
-  has_attachment :avatar, accept: [ :jpg, :png, :gif ]
+  # has_attachment :avatar, accept: [ :jpg, :png, :gif ]
+  has_many_attached :avatar
+  validate :active_storeage_valiation
+
   is_gravtastic
 
   after_invitation_accepted :set_role_on_invitation_accept
@@ -366,5 +369,18 @@ class User < ApplicationRecord
 
   def reject_invalid_characters_from_name
     self.name = name.gsub(INVALID_NAME_CHARACTERS, "") if !!name.match(INVALID_NAME_CHARACTERS)
+  end
+
+  def active_storeage_valiation
+    return unless documents.attached?
+
+    allowed_types = %w[image/jpeg image/jpg image/png image/gif]
+
+    documents.each do |document|
+      unless document.content_type.in?(allowed_types)
+        document.purge # Remove invalid file
+        errors.add(:documents, "Only the following are allowed: jpeg, jpg, png, gif")
+      end
+    end
   end
 end

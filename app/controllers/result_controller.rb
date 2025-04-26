@@ -3,16 +3,20 @@ class ResultController < ApplicationController
   theme :theme_chosen
 
   def index
-    @results = PgSearch.multisearch(params[:q]).page params[:page]
+    # TODO: Uncomment the following line when multisearch is implemented
+    # @results = PgSearch.multisearch(params[:q]).page params[:page]
+    @results = Topic.post_cache(params[:q]).page params[:page]
     @page_title = I18n.translate(:how_can_we_help, default: "How can we help?")
-    add_breadcrumb 'Search'
+    add_breadcrumb "Search"
   end
 
   def search
     depth = params[:depth].present? ? params[:depth] : 10
-    @results = PgSearch.multisearch(params[:query]).first(depth)
+    # TODO: Uncomment the following line when multisearch is implemented
+    # @results = PgSearch.post_cache(params[:query]).first(depth)
+    @results = Topic.post_cache(params[:query]).first(depth)
     respond_to do |format|
-      format.json { render :json => serialize_autocomplete_result(@results).to_json.html_safe }
+      format.json { render json: serialize_autocomplete_result(@results).to_json.html_safe }
     end
   end
 
@@ -23,13 +27,13 @@ class ResultController < ApplicationController
     results.each do |result|
       if result.searchable_type == "Topic"
         serialized_result << {
-          name: CGI::escapeHTML(result.searchable.name),
+          name: CGI.escapeHTML(result.searchable.name),
           content: result.searchable.post_cache.nil? ? nil : sanitized_post_cache(result),
           link: topic_posts_path(Topic.find(result.searchable_id))
           }
       else
         serialized_result << {
-          name: CGI::escapeHTML(result.searchable.title),
+          name: CGI.escapeHTML(result.searchable.title),
           content: result.searchable.meta_description.present? ? meta_content(result) : sanitized_content(result),
           link: category_doc_path(result.searchable.category_id, Doc.find(result.searchable_id))
         }
@@ -51,5 +55,4 @@ class ResultController < ApplicationController
   def meta_content(result)
     result.searchable.meta_description
   end
-
 end

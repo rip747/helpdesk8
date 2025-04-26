@@ -1,0 +1,1 @@
+//= link singular/all.js

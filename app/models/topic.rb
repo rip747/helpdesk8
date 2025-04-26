@@ -40,17 +40,20 @@ class Topic < ApplicationRecord
   accepts_nested_attributes_for :posts
 
   has_many :votes, as: :voteable
-  has_attachments  :screenshots, accept: [ :jpg, :png, :gif, :pdf, :txt, :rtf, :doc, :docx, :ppt, :pptx, :xls, :xlsx, :zip ]
 
-  include PgSearch::Model
-  multisearchable against: [ :id, :name, :post_cache ],
-                  if: :public?
+  # has_attachments  :screenshots
+  has_many_attached :screenshots
+  validate :active_storeage_valiation
 
-  pg_search_scope :admin_search,
-                  against: [ :id, :name, :user_name, :current_status, :post_cache ],
-                  associated_against: {
-                    teams: [ :name ]
-                  }
+  # include PgSearch::Model
+  # multisearchable against: [ :id, :name, :post_cache ],
+  #                 if: :public?
+
+  # pg_search_scope :admin_search,
+  #                 against: [ :id, :name, :user_name, :current_status, :post_cache ],
+  #                 associated_against: {
+  #                   teams: [ :name ]
+  #                 }
 
   # various scopes
   scope :recent, -> { order("created_at DESC").limit(8) }
@@ -64,7 +67,7 @@ class Topic < ApplicationRecord
   scope :assigned, -> { where.not(assigned_user_id: nil) }
 
   scope :chronologic, -> { order("updated_at DESC") }
-  scope :reverse, -> { order("updated_at ASC") }
+  # scope :reverse, -> { order("updated_at ASC") }
   scope :by_popularity, -> { order("points DESC") }
   scope :active, -> { where(current_status: %w[new open pending]) }
   scope :undeleted, -> { where.not(current_status: "trash") }
@@ -87,7 +90,7 @@ class Topic < ApplicationRecord
   validates :name, presence: true, length: { maximum: 255 }
   # validates :user_id, presence: true
 
-  enum priority: { low: 0, normal: 1, high: 2, very_high: 3 }
+  enum :priority, { low: 0, normal: 1, high: 2, very_high: 3 }
 
   def to_param
     "#{id}-#{name.parameterize}"
@@ -293,5 +296,19 @@ class Topic < ApplicationRecord
 
   def add_locale
     self.locale = I18n.locale
+  end
+
+
+  def active_storeage_valiation
+    return unless documents.attached?
+
+    allowed_types = %w[image/jpeg image/png image/gif application/pdf text/plain application/msword application/vnd.openxmlformats-officedocument.wordprocessingml.document application/vnd.ms-powerpoint application/vnd.openxmlformats-officedocument.presentationml.presentation application/vnd.ms-excel application/vnd.openxmlformats-officedocument.spreadsheetml.sheet application/zip]
+
+    documents.each do |document|
+      unless document.content_type.in?(allowed_types)
+        document.purge # Remove invalid file
+        errors.add(:documents, "Only the following are allowed: jpg, png, gif, pdf, txt, rtf, doc, docx, ppt, pptx, xls, xlsx, zip")
+      end
+    end
   end
 end

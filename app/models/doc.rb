@@ -38,23 +38,25 @@ class Doc < ApplicationRecord
   validates :body, presence: true
   validates :category_id, presence: true
 
-  include PgSearch::Model
-  multisearchable against: [ :title_with_translations, :body_with_translations, :keywords_with_translations ],
-    if: lambda { |record| record.category.present? && record.category.publicly_viewable? && record.active && record.category.active? }
+  # include PgSearch::Model
+  # multisearchable against: [ :title_with_translations, :body_with_translations, :keywords_with_translations ],
+  #   if: lambda { |record| record.category.present? && record.category.publicly_viewable? && record.active && record.category.active? }
 
-  pg_search_scope :agent_assist,
-              against: [ :title, :body, :keywords ],
-              associated_against: {
-                doc_translations: [ :title, :body, :keywords ]
-              }
+  # pg_search_scope :agent_assist,
+  #             against: [ :title, :body, :keywords ],
+  #             associated_against: {
+  #               doc_translations: [ :title, :body, :keywords ]
+  #             }
 
   has_paper_trail
 
-  translates :title, :body, :keywords, :title_tag, :meta_description, fallbacks_for_empty_translations: false, versioning: :paper_trail
+  translates :title, :body, :keywords, :title_tag, :meta_description, fallbacks_for_empty_translations: false# , versioning: :paper_trail
   globalize_accessors
 
   paginates_per 25
-  has_attachments :screenshots, accept: [ :jpg, :jpeg, :png, :gif, :pdf ]
+  # has_attachments :screenshots, accept: [ :jpg, :jpeg, :png, :gif, :pdf ]
+  has_many_attached :screenshots
+  validate :active_storeage_valiation
 
   include RankedModel
   ranks :rank
@@ -107,5 +109,20 @@ class Doc < ApplicationRecord
 
   def keywords_with_translations
     self.doc_translations.collect { |doc| doc.keywords }.join(" ")
+  end
+
+  private
+
+  def active_storeage_valiation
+    return unless documents.attached?
+
+    allowed_types = %w[image/jpg image/jpeg image/png image/gif application/pdf]
+
+    documents.each do |document|
+      unless document.content_type.in?(allowed_types)
+        document.purge # Remove invalid file
+        errors.add(:documents, "Only the following are allowed: jpg, jpeg, png, gif, pdf")
+      end
+    end
   end
 end
