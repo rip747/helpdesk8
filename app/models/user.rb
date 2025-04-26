@@ -98,7 +98,7 @@ class User < ApplicationRecord
   has_many :api_keys, dependent: :destroy
 
   # has_attachment :avatar, accept: [ :jpg, :png, :gif ]
-  has_many_attached :avatar
+  has_one_attached :avatar
   validate :active_storeage_valiation
 
   is_gravtastic
@@ -372,15 +372,11 @@ class User < ApplicationRecord
   end
 
   def active_storeage_valiation
-    return unless documents.attached?
-
+    return unless avatar.attached?
     allowed_types = %w[image/jpeg image/jpg image/png image/gif]
-
-    documents.each do |document|
-      unless document.content_type.in?(allowed_types)
-        document.purge # Remove invalid file
-        errors.add(:documents, "Only the following are allowed: jpeg, jpg, png, gif")
-      end
+    unless avatar.content_type.in?(allowed_types)
+      avatar.purge # Remove invalid file
+      errors.add(:avatar, "Only the following are allowed: jpeg, jpg, png, gif")
     end
   end
 end

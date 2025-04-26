@@ -79,13 +79,13 @@ class Doc < ApplicationRecord
     "#{id}-#{title.parameterize}"
   end
 
-  def read_translated_attribute(name)
-    if globalize.stash.contains?(Globalize.locale, name)
-      globalize.stash.read(Globalize.locale, name)
-    else
-      translation_for(Globalize.locale).send(name)
-    end
-  end
+  # def read_translated_attribute(name)
+  #   if globalize.stash.contains?(Globalize.locale, name)
+  #     globalize.stash.read(Globalize.locale, name)
+  #   else
+  #     translation_for(Globalize.locale).send(name)
+  #   end
+  # end
 
   def content
     c = RDiscount.new(self.body)
@@ -114,14 +114,14 @@ class Doc < ApplicationRecord
   private
 
   def active_storeage_valiation
-    return unless documents.attached?
+    return unless screenshots.attached?
 
     allowed_types = %w[image/jpg image/jpeg image/png image/gif application/pdf]
 
-    documents.each do |document|
-      unless document.content_type.in?(allowed_types)
-        document.purge # Remove invalid file
-        errors.add(:documents, "Only the following are allowed: jpg, jpeg, png, gif, pdf")
+    screenshots.each do |screenshot|
+      unless screenshot.content_type.in?(allowed_types)
+        screenshot.purge # Remove invalid file
+        errors.add(:screenshots, "Only the following are allowed: jpg, jpeg, png, gif, pdf")
       end
     end
   end
