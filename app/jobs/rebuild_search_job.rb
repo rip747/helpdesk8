@@ -3,6 +3,7 @@ class RebuildSearchJob < ApplicationJob
 
   # Calls a search rebuild, used when categories are updated
   def perform
-    PgSearch::Multisearch.rebuild(Doc)
+    # FIXME: This is a temporary fix for the search index rebuild
+    # PgSearch::Multisearch.rebuild(Doc)
   end
 end

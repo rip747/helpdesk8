@@ -28,8 +28,8 @@ class Post < ApplicationRecord
   ALLOWED_TAGS = %w[strong em a p br b img ul li]
   ALLOWED_ATTRIBUTES = %w[href src class style width height target]
 
-  belongs_to :topic, counter_cache: true, touch: true
-  belongs_to :user, touch: true
+  belongs_to :topic, counter_cache: true, touch: true, optional: true
+  belongs_to :user, touch: true, optional: true
   has_many :votes, as: :voteable, dependent: :delete_all
 
   # has_attachments :screenshots, accept: [ :jpg, :png, :gif, :pdf ]

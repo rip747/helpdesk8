@@ -13,7 +13,7 @@
 
 class Vote < ApplicationRecord
   belongs_to :voteable, polymorphic: true
-  belongs_to :user
+  belongs_to :user, optional: true
   after_create :increment_points_cache
 
   validates :voteable_id, uniqueness: { scope: [ :user_id, :voteable_type ] }

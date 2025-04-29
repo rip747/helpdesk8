@@ -22,7 +22,7 @@
 class Category < ApplicationRecord
   include SentenceCase
 
-  has_many :docs
+  has_many :docs, inverse_of: :category
   has_paper_trail
   has_ancestry
 
