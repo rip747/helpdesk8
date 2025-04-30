@@ -1,30 +1,29 @@
 class Admin::BaseController < ApplicationController
-
-  layout 'admin'
+  layout "admin"
   before_action :authenticate_user!
 
   def convert_to_brightness_value(background_hex_color)
-    (background_hex_color.scan(/../).map {|color| color.hex}).sum
+    (background_hex_color.scan(/../).map { |color| color.hex }).sum
   end
 
   def contrasting_text_color(background_hex_color)
-    convert_to_brightness_value(background_hex_color) > 382.5 ? '#000' : '#fff'
+    convert_to_brightness_value(background_hex_color) > 382.5 ? "#000" : "#fff"
   end
   helper_method :contrasting_text_color
 
-  def lighten_color(hex_color, amount=0.6)
-    hex_color = hex_color.gsub('#','')
-    rgb = hex_color.scan(/../).map {|color| color.hex}
-    rgb[0] = [(rgb[0].to_i + 255 * amount).round, 255].min
-    rgb[1] = [(rgb[1].to_i + 255 * amount).round, 255].min
-    rgb[2] = [(rgb[2].to_i + 255 * amount).round, 255].min
+  def lighten_color(hex_color, amount = 0.6)
+    hex_color = hex_color.gsub("#", "")
+    rgb = hex_color.scan(/../).map { |color| color.hex }
+    rgb[0] = [ (rgb[0].to_i + 255 * amount).round, 255 ].min
+    rgb[1] = [ (rgb[1].to_i + 255 * amount).round, 255 ].min
+    rgb[2] = [ (rgb[2].to_i + 255 * amount).round, 255 ].min
     "#%02x%02x%02x" % rgb
   end
   helper_method :lighten_color
 
-  def darken_color(hex_color, amount=0.4)
-    hex_color = hex_color.gsub('#','')
-    rgb = hex_color.scan(/../).map {|color| color.hex}
+  def darken_color(hex_color, amount = 0.4)
+    hex_color = hex_color.gsub("#", "")
+    rgb = hex_color.scan(/../).map { |color| color.hex }
     rgb[0] = (rgb[0].to_i * amount).round
     rgb[1] = (rgb[1].to_i * amount).round
     rgb[2] = (rgb[2].to_i * amount).round
@@ -53,7 +52,7 @@ class Admin::BaseController < ApplicationController
     @remote_search = true
   end
 
-  def check_current_user_is_allowed? topic
+  def check_current_user_is_allowed?(topic)
     return true if !topic.private || current_user.is_admin? || current_user.team_list.include?(topic.team_list.first)
     if topic.team_list.count > 0 && current_user.is_restricted? && (topic.team_list + current_user.team_list).count > 0
       false
@@ -86,20 +85,20 @@ class Admin::BaseController < ApplicationController
     else
       topics_raw = params[:team].present? ? Topic.all.tagged_with(params[:team], any: true) : Topic
     end
-    
+
     # Only include cloudinary files if enabled
     topics_raw = cloudinary_enabled? ? topics_raw.includes(user: :avatar_files).chronologic : topics_raw.includes(:user).chronologic
 
     get_all_teams
 
     case @status
-    when 'new'
+    when "new"
       topics_raw = topics_raw.unread
-    when 'active'
+    when "active"
       topics_raw = topics_raw.active
-    when 'mine'
+    when "mine"
       topics_raw = Topic.active.mine(current_user.id).chronologic
-    when 'pending'
+    when "pending"
       topics_raw = Topic.pending.mine(current_user.id).chronologic
     else
       topics_raw = topics_raw.where(current_status: @status)
@@ -110,8 +109,8 @@ class Admin::BaseController < ApplicationController
 
   def fetch_counts
     if current_user.is_restricted? && teams?
-      topics = Topic.tagged_with(current_user.team_list, :any => true)
-      @admins = User.agents.available #can_receive_ticket.tagged_with(current_user.team_list, :any => true)
+      topics = Topic.tagged_with(current_user.team_list, any: true)
+      @admins = User.agents.available # can_receive_ticket.tagged_with(current_user.team_list, :any => true)
     else
       topics = Topic.all
       @admins = User.agents.available.includes(:topics)
@@ -132,5 +131,4 @@ class Admin::BaseController < ApplicationController
     @public_nonfeatured_categories = Category.roots.publicly.unfeatured.alpha.includes(:docs)
     @internal_categories = Category.only_internally.ordered.includes(:docs)
   end
-
 end

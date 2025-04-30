@@ -27,13 +27,19 @@ $navbar-default-link-active-bg:            #fff;
 $font-family-sans-serif:  "Droid Sans", sans-serif;
 $font-family-serif:       'Droid Sans', serif;
 
-$font-size-base:          13px;
+$font-size-base:          1rem;
 
 // Override button styles
 $btn-primary-color:              #fff !default;
 $btn-primary-bg:                 $brand-primary !default;
 $btn-primary-border:             darken($btn-primary-bg, 5%) !default;
 $btn-border-radius-base:         5px !default;
+
+$nav-link-height: 40px !default;
+$navbar-brand-height: 40px !default;
+$line-height-computed: 40px;
+$padding-base-vertical: 40px !default;
+$font-size-large: 1.5rem;
 
 // LEGACY LESS CODE FOLLOWS:
 // TODO: Replace as necessary with SCSS equivalents

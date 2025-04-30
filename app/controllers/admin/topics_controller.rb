@@ -25,22 +25,21 @@
 #
 
 class Admin::TopicsController < Admin::BaseController
-
   include SearchConcern
 
   before_action :verify_agent
-  before_action :fetch_counts, only: ['index','show', 'update_topic', 'user_profile']
-  before_action :remote_search, only: ['index', 'show', 'update_topic']
-  before_action :get_all_teams, except: ['shortcuts']
+  before_action :fetch_counts, only: [ "index", "show", "update_topic" ]
+  before_action :remote_search, only: [ "index", "show", "update_topic" ]
+  before_action :get_all_teams, except: [ "shortcuts" ]
   before_action :set_hash_id_salt
-  before_action :get_topics_cohort, only: ['update_topic', 'assign_agent', 'unassign_agent', 'toggle_privacy', 'assign_team', 'unassign_team']
+  before_action :get_topics_cohort, only: [ "update_topic", "assign_agent", "unassign_agent", "toggle_privacy", "assign_team", "unassign_team" ]
 
   respond_to :js, :html, only: :show
   respond_to :js
 
   def index
     get_tickets_by_status
-    team_tag_ids = ActsAsTaggableOn::Tagging.all.where(context: "teams").includes(:tag).map{|tagging| tagging.tag.id }.uniq
+    team_tag_ids = ActsAsTaggableOn::Tagging.all.where(context: "teams").includes(:tag).map { |tagging| tagging.tag.id }.uniq
     @teams = ActsAsTaggableOn::Tag.where("id IN (?)", team_tag_ids)
     tracker("Admin-Nav", "Click", @status.titleize)
   end
@@ -70,7 +69,7 @@ class Admin::TopicsController < Admin::BaseController
   def new
     fetch_counts
 
-    @topic = Topic.new(channel: AppSettings['settings.default_channel'])
+    @topic = Topic.new(channel: AppSettings["settings.default_channel"])
     @user = params[:user_id].present? ? User.find(params[:user_id]) : User.new
   end
 
@@ -78,7 +77,7 @@ class Admin::TopicsController < Admin::BaseController
     @page_title = t(:start_discussion, default: "Start a New Discussion")
     @title_tag = "#{AppSettings['settings.site_name']}: #{@page_title}"
 
-    if params[:topic][:kind] == 'internal'
+    if params[:topic][:kind] == "internal"
       create_internal_ticket
     else
       create_customer_conversation
@@ -87,22 +86,21 @@ class Admin::TopicsController < Admin::BaseController
 
   # Updates discussion status
   def update_topic
-
     bulk_post_attributes = []
     if params[:change_status].present?
       user_id = current_user.id || 2
-      if ["closed", "reopen", "trash"].include?(params[:change_status])
+      if [ "closed", "reopen", "trash" ].include?(params[:change_status])
         @topics.each do |topic|
           # prepare bulk params
-          bulk_post_attributes << {body: I18n.t("#{params[:change_status]}_message", user_name: User.find(user_id).name), kind: 'note', user_id: user_id, topic_id: topic.id}
+          bulk_post_attributes << { body: I18n.t("#{params[:change_status]}_message", user_name: User.find(user_id).name), kind: "note", user_id: user_id, topic_id: topic.id }
         end
 
         case params[:change_status]
-        when 'closed'
+        when "closed"
           @topics.bulk_close(bulk_post_attributes)
-        when 'reopen'
+        when "reopen"
           @topics.bulk_reopen(bulk_post_attributes)
-        when 'trash'
+        when "trash"
           @topics.bulk_trash(bulk_post_attributes)
         end
       else
@@ -124,12 +122,12 @@ class Admin::TopicsController < Admin::BaseController
     assigned_user = User.find(params[:assigned_user_id])
     bulk_post_attributes = []
     unless params[:assigned_user_id].blank?
-      #handle array of topics
+      # handle array of topics
       @topics.each do |topic|
         # if message was unassigned previously, use the new assignee
         # this is to give note attribution below
         previous_assigned_id = topic.assigned_user_id || params[:assigned_user_id]
-        bulk_post_attributes << {body: I18n.t(:assigned_message, assigned_to: assigned_user.name), kind: 'note', user_id: previous_assigned_id, topic_id: topic.id}
+        bulk_post_attributes << { body: I18n.t(:assigned_message, assigned_to: assigned_user.name), kind: "note", user_id: previous_assigned_id, topic_id: topic.id }
 
         # Calls to GA
         tracker("Agent: #{current_user.name}", "Assigned to #{assigned_user.name.titleize}", @topic.to_param, 0)
@@ -144,9 +142,9 @@ class Admin::TopicsController < Admin::BaseController
   def unassign_agent
     bulk_post_attributes = []
     unless @topics.count == 0
-      #handle array of topics
+      # handle array of topics
       @topics.each do |topic|
-        bulk_post_attributes << {body: I18n.t(:unassigned_message, default: "This ticket has been unassigned."), kind: 'note', user_id: current_user.id, topic_id: topic.id}
+        bulk_post_attributes << { body: I18n.t(:unassigned_message, default: "This ticket has been unassigned."), kind: "note", user_id: current_user.id, topic_id: topic.id }
 
         # Calls to GA
         tracker("Agent: #{current_user.name}", I18n.t(:unassigned_message, default: "This ticket has been unassigned."), @topic.to_param, 0)
@@ -161,19 +159,18 @@ class Admin::TopicsController < Admin::BaseController
 
   # Toggle privacy of a topic
   def toggle_privacy
-
-    #handle array of topics
+    # handle array of topics
     # @topics = Topic.where(id: params[:topic_ids])
     @topics.update_all(private: params[:private], forum_id: params[:forum_id])
-    @topics.each{|topic| topic.update_pg_search_document}
+    @topics.each { |topic| topic.update_pg_search_document }
     bulk_post_attributes = []
 
     @topics.each do |topic|
       if topic.forum_id == 1
-        bulk_post_attributes << {body: I18n.t(:converted_to_ticket), kind: 'note', user_id: current_user.id, topic_id: topic.id}
+        bulk_post_attributes << { body: I18n.t(:converted_to_ticket), kind: "note", user_id: current_user.id, topic_id: topic.id }
         flash[:notice] = I18n.t(:converted_to_ticket)
       else
-        bulk_post_attributes << {body: I18n.t(:converted_to_topic, forum_name: topic.forum.name), kind: 'note', user_id: current_user.id, topic_id: topic.id}
+        bulk_post_attributes << { body: I18n.t(:converted_to_topic, forum_name: topic.forum.name), kind: "note", user_id: current_user.id, topic_id: topic.id }
         flash[:notice] = I18n.t(:converted_to_topic, forum_name: topic.forum.name)
       end
 
@@ -192,16 +189,15 @@ class Admin::TopicsController < Admin::BaseController
     get_tickets_by_status
 
 
-    # respond_to do |format|
-    #   format.js {
+        # respond_to do |format|
+        #   format.js {
         if params[:topic_ids].count > 1
-          render 'index'
+          render "index"
         else
-          render 'update_ticket', id: @topic.id
+          render "update_ticket", id: @topic.id
         end
     #   }
     # end
-
   end
 
   def update
@@ -225,16 +221,16 @@ class Admin::TopicsController < Admin::BaseController
     previous_tagging = @topic.tag_list
     @topic.tag_list = params[:topic][:tag_list]
     if @topic.save && previous_tagging != @topic.tag_list
-    # if @topic.update(tag_list: params[:tag][:tag_list])
+      # if @topic.update(tag_list: params[:tag][:tag_list])
 
 
       @topic.posts.create(
-        body: t('tagged_with', topic_id: @topic.id, tagged_with: @topic.tag_list),
+        body: t("tagged_with", topic_id: @topic.id, tagged_with: @topic.tag_list),
         user: current_user,
-        kind: 'note',
+        kind: "note",
       )
 
-      flash[:notice] = t('tagged_with', topic_id: @topic.id, tagged_with: @topic.tag_list)
+      flash[:notice] = t("tagged_with", topic_id: @topic.id, tagged_with: @topic.tag_list)
     end
 
     @posts = @topic.posts.chronologic
@@ -248,7 +244,7 @@ class Admin::TopicsController < Admin::BaseController
         redirect_to admin_topic_path(@topic)
       }
       format.js {
-        render 'update_ticket', id: @topic.id
+        render "update_ticket", id: @topic.id
       }
     end
   end
@@ -257,9 +253,9 @@ class Admin::TopicsController < Admin::BaseController
     assigned_group = params[:assign_team]
     bulk_post_attributes = []
     unless assigned_group.blank?
-      #handle array of topics
+      # handle array of topics
       @topics.each do |topic|
-        bulk_post_attributes << {body: I18n.t(:assigned_group, assigned_group: assigned_group), kind: 'note', user_id: current_user.id, topic_id: topic.id}
+        bulk_post_attributes << { body: I18n.t(:assigned_group, assigned_group: assigned_group), kind: "note", user_id: current_user.id, topic_id: topic.id }
 
         # Calls to GA
         tracker("Agent: #{current_user.name}", "Assigned to #{assigned_group.titleize}", @topic.to_param, 0)
@@ -281,7 +277,7 @@ class Admin::TopicsController < Admin::BaseController
       topic.posts.create(
         body: "This ticket was unassigned from all team groups",
         user: current_user,
-        kind: 'note',
+        kind: "note",
       )
     end
 
@@ -293,7 +289,7 @@ class Admin::TopicsController < Admin::BaseController
     parent_post = Post.find(params[:post_id])
 
     @topic = Topic.new(
-      name: t('new_discussion_topic_title', original_name: parent_topic.name, original_id: parent_topic.id, default: "Split from #{parent_topic.id}-#{parent_topic.name}"),
+      name: t("new_discussion_topic_title", original_name: parent_topic.name, original_id: parent_topic.id, default: "Split from #{parent_topic.id}-#{parent_topic.name}"),
       user: parent_post.user,
       forum_id: parent_topic.forum_id,
       private: parent_topic.private,
@@ -307,15 +303,15 @@ class Admin::TopicsController < Admin::BaseController
       @posts.create(
         body: parent_post.body,
         user: parent_post.user,
-        kind: 'first',
+        kind: "first",
         screenshots: parent_post.screenshots,
         attachments: parent_post.attachments,
       )
 
       parent_topic.posts.create(
-        body: t('new_discussion_post', topic_id: @topic.id, default: "Discussion ##{@topic.id} was created from this one"),
+        body: t("new_discussion_post", topic_id: @topic.id, default: "Discussion ##{@topic.id} was created from this one"),
         user: current_user,
-        kind: 'note',
+        kind: "note",
       )
     end
 
@@ -326,7 +322,7 @@ class Admin::TopicsController < Admin::BaseController
 
     respond_to do |format|
       format.html { redirect_to admin_topic_path(@topic) }
-      format.js { render 'update_ticket', id: @topic.id }
+      format.js { render "update_ticket", id: @topic.id }
     end
   end
 
@@ -339,17 +335,16 @@ class Admin::TopicsController < Admin::BaseController
 
 
     respond_to do |format|
-      format.js { render 'show', id: @topic }
+      format.js { render "show", id: @topic }
     end
   end
 
   def shortcuts
-    render layout: 'admin-plain'
+    render layout: "admin-plain"
   end
 
   def empty_trash
-
-    Topic.trash.update_all(current_status: 'deleting')
+    Topic.trash.update_all(current_status: "deleting")
     EmptyTrashJob.perform_later
 
     fetch_counts
@@ -364,7 +359,7 @@ class Admin::TopicsController < Admin::BaseController
 
   protected
 
-  # renders out the ticketing UI, or that of a single ticket after 
+  # renders out the ticketing UI, or that of a single ticket after
   # an operation is completed
   def ticketing_ui
     @updated_topics = @topics
@@ -385,20 +380,19 @@ class Admin::TopicsController < Admin::BaseController
     get_all_teams
 
     respond_to do |format|
-      format.html #render action: 'ticket', id: @topic.id
+      format.html # render action: 'ticket', id: @topic.id
       format.js {
         if params[:q].present?
-          render 'admin/search/search'
+          render "admin/search/search"
         elsif params[:topic_ids].present? && params[:topic_ids].count > 1
-          render 'index'
+          render "index"
         elsif @topic.present?
-          render 'update_ticket', id: @topic.id
+          render "update_ticket", id: @topic.id
         else
-          render 'admin/topics/index'
+          render "admin/topics/index"
         end
       }
     end
-
   end
 
   def create_customer_conversation
@@ -438,26 +432,24 @@ class Admin::TopicsController < Admin::BaseController
         PostMailer.new_post(@post .id).deliver_later
 
         # track event in GA
-        tracker('Request', 'Post', 'New Topic')
-        tracker('Agent: Unassigned', 'New', @topic.to_param)
+        tracker("Request", "Post", "New Topic")
+        tracker("Agent: Unassigned", "New", @topic.to_param)
 
         # Now that we are rendering show, get the posts (just one)
         # TODO probably can refactor this
         @posts = @topic.posts.chronologic.includes(:user)
         format.js {
-          render action: 'show', id: @topic
-
+          render action: "show", id: @topic
         }
         format.html {
-          render action: 'show', id: @topic
+          render action: "show", id: @topic
         }
       else
         format.html {
-          render action: 'new'
+          render action: "new"
         }
       end
     end
-
   end
 
   # Internal ticket is created by the agent.  Does not send messages to customer
@@ -474,7 +466,7 @@ class Admin::TopicsController < Admin::BaseController
       priority: params[:topic][:priority],
       current_status: params[:topic][:current_status],
       assigned_user_id: params[:topic][:assigned_user_id],
-      kind: 'internal'
+      kind: "internal"
     )
     if @user.nil?
       create_ticket_user
@@ -494,27 +486,24 @@ class Admin::TopicsController < Admin::BaseController
         )
 
         # track event in GA
-        tracker('Request', 'Post', 'New Internal Topic')
-        tracker('Agent: Unassigned', 'New', @topic.to_param)
+        tracker("Request", "Post", "New Internal Topic")
+        tracker("Agent: Unassigned", "New", @topic.to_param)
 
         # Now that we are rendering show, get the posts (just one)
         # TODO probably can refactor this
         @posts = @topic.posts.chronologic.includes(:user)
         format.js {
-          render action: 'show', id: @topic
-
+          render action: "show", id: @topic
         }
         format.html {
-          render action: 'show', id: @topic
+          render action: "show", id: @topic
         }
       else
         format.html {
-          render action: 'new'
+          render action: "new"
         }
       end
     end
-
-
   end
 
   def create_ticket_user
@@ -552,7 +541,6 @@ class Admin::TopicsController < Admin::BaseController
     else
       @topics = Topic.where(id: params[:topic_ids]).all
     end
-    
   end
 
   def get_tickets
@@ -566,15 +554,15 @@ class Admin::TopicsController < Admin::BaseController
 
     # when 'all'
     #   @topics = Topic.all.page(params[:page]).per(15)
-    when 'new'
+    when "new"
       @topics = Topic.unread.page(params[:page]).per(15)
-    when 'active'
+    when "active"
       @topics = Topic.active.page(params[:page]).per(15)
     # when 'unread'
     #   @topics = Topic.unread.all.page(params[:page]).per(15)
-    when 'mine'
+    when "mine"
       @topics = Topic.mine(current_user.id).page(params[:page]).per(15)
-    when 'pending'
+    when "pending"
       @topics = Topic.pending.mine(current_user.id).page(params[:page]).per(15)
     else
       @topics = Topic.where(current_status: @status).page(params[:page]).per(15)
@@ -589,7 +577,6 @@ class Admin::TopicsController < Admin::BaseController
   end
 
   def set_hash_id_salt
-    Hashid::Rails.configuration.salt=AppSettings['settings.anonymous_salt']
+    Hashid::Rails.configuration.salt=AppSettings["settings.anonymous_salt"]
   end
-
 end

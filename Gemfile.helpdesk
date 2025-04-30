@@ -73,3 +73,8 @@ gem 'rails-timeago'
 # File handling
 gem 'cloudinary', '1.1.7'
 gem 'attachinary'
+
+# Summernote is the wysiwyg editor
+gem 'jquery-minicolors-rails'
+gem 'summernote-rails'
+gem 'codemirror-rails', git: "https://github.com/rip747/codemirror-rails", branch: "rip747-patch-1"
