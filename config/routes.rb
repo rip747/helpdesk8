@@ -12,9 +12,9 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
 
-  # disabling this for right now since I don't want to redirect to the locale
-  # root to: "locales#redirect_on_locale"
-  root to: "home#index"
+  # Redirect to the correct locale based on the user's browser settings
+  root to: "locales#redirect_on_locale"
+
 
   devise_for :users, skip: [ :password, :registration, :confirmation, :invitations ], controllers: { omniauth_callbacks: "omniauth_callbacks" }
 
