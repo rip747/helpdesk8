@@ -34,7 +34,7 @@ gem 'http_accept_language'
 gem 'themes_on_rails'
 
 # asset bundling
-gem 'jsbundling-rails'
+# gem 'jsbundling-rails'
 gem 'cssbundling-rails'
 gem 'foreman'
 gem 'dartsass-rails'
@@ -78,3 +78,7 @@ gem 'attachinary'
 gem 'jquery-minicolors-rails'
 gem 'summernote-rails'
 gem 'codemirror-rails', git: "https://github.com/rip747/codemirror-rails", branch: "rip747-patch-1"
+
+group :development do
+  gem 'meta_request', github: 'dejan/rails_panel', ref: 'meta_request-v0.8.5'
+end
