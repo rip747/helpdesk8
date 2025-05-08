@@ -26,7 +26,9 @@ REFERENCED LICENSE
 
 <%#= stylesheet_link_tag 'application', "data-turbolinks-track" => true %>
 <%= stylesheet_link_tag 'singular/all', "data-turbolinks-track" => true %>
-<%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+<%= javascript_importmap_tags %>
+<%= javascript_include_tag "application", type: "module", defer: "true" %>
+<%#= javascript_include_tag "application", "data-turbolinks-track" => true %>
 <%= javascript_include_tag "singular/all", "data-turbolinks-track" => true %>
 <%= timeago_script_tag %>
 
@@ -35,10 +37,10 @@ REFERENCED LICENSE
 
 <%= csrf_meta_tags %>
 <%= favicon_link_tag "#{AppSettings['design.favicon']}" %>
-<%= cloudinary_js_config %>
+<%#= cloudinary_js_config %>
 
 <%= render 'layouts/google_analytics' %>
 
-<script>
+<script type="module">
 Helpy.domain = '<%= "//" + request.host_with_port %>';
 </script>

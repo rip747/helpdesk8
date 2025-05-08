@@ -26,19 +26,21 @@ REFERENCED LICENSE
 
 <%#= stylesheet_link_tag 'application', "data-turbolinks-track" => true %>
 <%= stylesheet_link_tag 'nordic/all', "data-turbolinks-track" => true %>
-<%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+<%= javascript_importmap_tags %>
+<%= javascript_include_tag "application", type: "module" %>
+<%#= javascript_include_tag "application", "data-turbolinks-track" => true %>
 <%= javascript_include_tag "nordic/all", "data-turbolinks-track" => true %>
-<%= timeago_script_tag %>
+<%#= timeago_script_tag %>
 
 <%= @feed_link.html_safe if @feed_link %>
 <link href="https://fonts.googleapis.com/css?family=Inconsolata|Libre+Franklin:300,300i,600,600i" rel="stylesheet">
 
 <%= csrf_meta_tags %>
 <%= favicon_link_tag "#{AppSettings['design.favicon']}" %>
-<%= cloudinary_js_config %>
+<%#= cloudinary_js_config %>
 
 <%= render 'layouts/google_analytics' %>
 
-<script>
+<script type="module">
 Helpy.domain = '<%= "//" + request.host_with_port %>';
 </script>

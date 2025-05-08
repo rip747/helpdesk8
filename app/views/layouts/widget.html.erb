@@ -13,7 +13,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <%= stylesheet_link_tag 'application', "data-turbolinks-track" => true %>
-    <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+	<%= javascript_importmap_tags %>
+	<%= javascript_include_tag "application", type: "module" %>
+    <%#= javascript_include_tag "application", "data-turbolinks-track" => true %>
     <%#= timeago_script_tag %>
 
     <%#= @feed_link.html_safe if @feed_link %>
@@ -21,7 +23,7 @@
 
     <%= csrf_meta_tags %>
     <%#= favicon_link_tag 'favicon.ico' %>
-    <%= cloudinary_js_config %>
+    <%#= cloudinary_js_config %>
 
 		<%= render 'layouts/google_analytics' %>
 
