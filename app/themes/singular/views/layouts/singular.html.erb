@@ -155,7 +155,9 @@
 		</div>
 	</footer>
 
-<script>
+<script type="module">
+import $ from 'jquery';
+import "sidr";
 $('#right-menu').sidr({
   name: 'nav',
   side: 'right',
@@ -181,6 +183,7 @@ $(document).on('page:before-change', function () {
   $.sidr('close', 'nav');
 });
 </script>
+
 <%= "<script src='/assets/widget.v1.js'></script>".html_safe if AppSettings['widget.show_on_support_site'] == '1' %>
 <%= "#{AppSettings['design.footer_js']}".html_safe %>
 

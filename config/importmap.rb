@@ -7,3 +7,4 @@ pin "@hotwired/stimulus-loading", to: "stimulus-loading.js"
 pin_all_from "app/javascript/controllers", under: "controllers"
 pin "timeago" # @1.6.7
 pin "jquery" # @3.7.1
+pin "sidr", to: "https://cdn.jsdelivr.net/npm/sidr@2.2.1/dist/jquery.sidr.min.js"

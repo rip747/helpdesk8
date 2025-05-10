@@ -3,10 +3,4 @@ import "@hotwired/turbo-rails"
 import "controllers"
 import 'jquery'
 import "timeago"
-
-window.$ = window.jQuery = jquery;
-console.log("Turbo loaded!");
-$(document).on("turbo:load", () => {
-    console.log("Turbo loaded!");
-});
-  
+ 
