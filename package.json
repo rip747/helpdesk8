@@ -2,6 +2,7 @@
   "name": "app",
   "private": true,
   "dependencies": {
+    "font-awesome": "^4.7.0",
     "jquery": "^3.7.1",
     "sidr": "^2.2.1",
     "timeago": "^1.6.7",

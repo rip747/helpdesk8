@@ -40,7 +40,6 @@ gem 'foreman'
 gem 'dartsass-rails'
 
 # Bootstrap/UI Gems
-gem 'font-awesome-sass'
 # gem 'bootstrap-sass'
 gem 'bootstrap'
 gem 'bootstrap_form'

@@ -54,7 +54,7 @@ import 'timeago';
 window.jQuery = $;
 window.$ = $;
 
-require('sidr/dist/jquery.sidr.js');
+require('sidr/dist/jquery.sidr.min.js');
 
 
 (function($){

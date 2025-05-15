@@ -1,3 +1,6 @@
+@use 'font-awesome/scss/font-awesome' with ($fa-font-path: '..', $fa-css-prefix: 'fas');
+
+
 // Import Helpy variables and boostrap overrides
 @import "bootstrap-overrides";
 
@@ -6,7 +9,7 @@
 @import "bootstrap";
 
 // Import font-awesome
-@import "font-awesome";
+@import 'font-awesome/scss/font-awesome';
 
 // Import other dependencies
 @import "bootstrap-icon-chooser/css/icon-picker";
