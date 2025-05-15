@@ -25,11 +25,9 @@ REFERENCED LICENSE
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <%#= stylesheet_link_tag 'application', "data-turbolinks-track" => true %>
-<%= stylesheet_link_tag 'singular/all', "data-turbolinks-track" => true %>
-<%= javascript_importmap_tags %>
-<%= javascript_include_tag "application", type: "module", defer: "true" %>
-<%#= javascript_include_tag "application", "data-turbolinks-track" => true %>
-<%= javascript_include_tag "singular/all", "data-turbolinks-track" => true %>
+<%= stylesheet_link_tag 'singular/all', "data-turbolinks-track": "reload" %>
+<%= javascript_include_tag "application", "data-turbolinks-track": "reload" %>
+<%= javascript_include_tag "singular/all", "data-turbolinks-track": "reload" %>
 <%= timeago_script_tag %>
 
 <%= @feed_link.html_safe if @feed_link %>
@@ -41,6 +39,6 @@ REFERENCED LICENSE
 
 <%= render 'layouts/google_analytics' %>
 
-<script type="module">
+<script>
 //Helpy.domain = '<%= "//" + request.host_with_port %>';
 </script>

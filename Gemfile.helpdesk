@@ -34,7 +34,7 @@ gem 'http_accept_language'
 gem 'themes_on_rails'
 
 # asset bundling
-# gem 'jsbundling-rails'
+gem 'jsbundling-rails'
 gem 'cssbundling-rails'
 gem 'foreman'
 gem 'dartsass-rails'
@@ -73,6 +73,11 @@ gem 'rails-timeago'
 # File handling
 gem 'cloudinary', '1.1.7'
 gem 'attachinary'
+
+# Use jquery as the JavaScript library
+# gem 'jquery-rails'
+# gem 'jquery-ui-rails'
+# gem "jquery-fileupload-rails"
 
 # Summernote is the wysiwyg editor
 gem 'jquery-minicolors-rails'

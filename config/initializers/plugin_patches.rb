@@ -20,13 +20,13 @@ gem_dir = Gem::Specification.find_by_name("twitter-bootstrap-rails").gem_dir
 require "#{gem_dir}/app/helpers/badge_label_helper"
 
 # rails-timeago
-module Rails
-  module Timeago
-    module Helper
-      # Return a JavaScript tag to set jQuery timeago locale.
-      def timeago_script_tag(**kwargs)
-        javascript_tag("import jQuery from \"jquery\"; jQuery.timeago.settings.lang=\"#{I18n.locale}\";", type: "module", **kwargs) if I18n.locale != 'en'
-      end
-    end
-  end
-end
+# module Rails
+#   module Timeago
+#     module Helper
+#       # Return a JavaScript tag to set jQuery timeago locale.
+#       def timeago_script_tag(**kwargs)
+#         javascript_tag("import jQuery from \"jquery\"; jQuery.timeago.settings.lang=\"#{I18n.locale}\";", type: "module", **kwargs) if I18n.locale != 'en'
+#       end
+#     end
+#   end
+# end

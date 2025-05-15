@@ -1,0 +1,16 @@
+{
+  "name": "app",
+  "private": true,
+  "dependencies": {
+    "jquery": "^3.7.1",
+    "sidr": "^2.2.1",
+    "timeago": "^1.6.7",
+    "yarn": "^1.22.22"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.4"
+  },
+  "scripts": {
+    "build": "esbuild app/assets/javascripts/*.* --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets"
+  }
+}

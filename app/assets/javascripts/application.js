@@ -48,6 +48,15 @@
 // Jtruncate plugin, http://www.jeremymartin.name/projects.php?project=jTruncate
 // modified by Scott Miller- remove animation, newline for more link
 
+import $ from 'jquery';
+import 'timeago';
+
+window.jQuery = $;
+window.$ = $;
+
+require('sidr/dist/jquery.sidr.js');
+
+
 (function($){
   $.fn.jTruncate = function(opts) {
     var defaults = {

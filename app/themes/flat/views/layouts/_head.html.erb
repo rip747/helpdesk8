@@ -26,9 +26,7 @@ REFERENCED LICENSE
 
 <%#= stylesheet_link_tag 'application', "data-turbolinks-track" => true %>
 <%= stylesheet_link_tag 'flat/all', "data-turbolinks-track" => true %>
-<%= javascript_importmap_tags %>
-<%= javascript_include_tag "application", type: "module" %>
-<%#= javascript_include_tag "application", "data-turbolinks-track" => true %>
+<%= javascript_include_tag "application", "data-turbolinks-track" => true %>
 <%= javascript_include_tag "flat/all", "data-turbolinks-track" => true %>
 <%= timeago_script_tag %>
 
@@ -41,6 +39,6 @@ REFERENCED LICENSE
 
 <%= render 'layouts/google_analytics' %>
 
-<script type="module">
+<script>
 Helpy.domain = '<%= "//" + request.host_with_port %>';
 </script>
