@@ -111,8 +111,6 @@ GEM
     bindex (0.8.1)
     bootsnap (1.18.4)
       msgpack (~> 1.2)
-    bootstrap (5.3.5)
-      popper_js (>= 2.11.8, < 3)
     bootstrap-datepicker-rails (1.10.0.1)
       railties (>= 3.0)
     bootstrap-select-rails (1.13.8)
@@ -198,19 +196,25 @@ GEM
       request_store (~> 1.0)
     globalize-accessors (0.3.0)
       globalize (>= 5.0.0)
-    google-protobuf (4.30.2)
+    google-protobuf (4.31.0)
       bigdecimal
       rake (>= 13)
-    google-protobuf (4.30.2-aarch64-linux)
+    google-protobuf (4.31.0-aarch64-linux-gnu)
       bigdecimal
       rake (>= 13)
-    google-protobuf (4.30.2-arm64-darwin)
+    google-protobuf (4.31.0-aarch64-linux-musl)
       bigdecimal
       rake (>= 13)
-    google-protobuf (4.30.2-x86_64-darwin)
+    google-protobuf (4.31.0-arm64-darwin)
       bigdecimal
       rake (>= 13)
-    google-protobuf (4.30.2-x86_64-linux)
+    google-protobuf (4.31.0-x86_64-darwin)
+      bigdecimal
+      rake (>= 13)
+    google-protobuf (4.31.0-x86_64-linux-gnu)
+      bigdecimal
+      rake (>= 13)
+    google-protobuf (4.31.0-x86_64-linux-musl)
       bigdecimal
       rake (>= 13)
     gravtastic (3.2.6)
@@ -389,7 +393,6 @@ GEM
     parser (3.3.7.4)
       ast (~> 2.4.1)
       racc
-    popper_js (2.11.8)
     pp (0.6.2)
       prettyprint
     prettyprint (0.2.0)
@@ -512,22 +515,22 @@ GEM
       rubocop-rails (>= 2.30)
     ruby-progressbar (1.13.0)
     rubyzip (2.4.1)
-    sass-embedded (1.87.0-aarch64-linux-gnu)
-      google-protobuf (~> 4.30)
-    sass-embedded (1.87.0-aarch64-linux-musl)
-      google-protobuf (~> 4.30)
-    sass-embedded (1.87.0-arm-linux-gnueabihf)
-      google-protobuf (~> 4.30)
-    sass-embedded (1.87.0-arm-linux-musleabihf)
-      google-protobuf (~> 4.30)
-    sass-embedded (1.87.0-arm64-darwin)
-      google-protobuf (~> 4.30)
-    sass-embedded (1.87.0-x86_64-darwin)
-      google-protobuf (~> 4.30)
-    sass-embedded (1.87.0-x86_64-linux-gnu)
-      google-protobuf (~> 4.30)
-    sass-embedded (1.87.0-x86_64-linux-musl)
-      google-protobuf (~> 4.30)
+    sass-embedded (1.89.0-aarch64-linux-gnu)
+      google-protobuf (~> 4.31)
+    sass-embedded (1.89.0-aarch64-linux-musl)
+      google-protobuf (~> 4.31)
+    sass-embedded (1.89.0-arm-linux-gnueabihf)
+      google-protobuf (~> 4.31)
+    sass-embedded (1.89.0-arm-linux-musleabihf)
+      google-protobuf (~> 4.31)
+    sass-embedded (1.89.0-arm64-darwin)
+      google-protobuf (~> 4.31)
+    sass-embedded (1.89.0-x86_64-darwin)
+      google-protobuf (~> 4.31)
+    sass-embedded (1.89.0-x86_64-linux-gnu)
+      google-protobuf (~> 4.31)
+    sass-embedded (1.89.0-x86_64-linux-musl)
+      google-protobuf (~> 4.31)
     securerandom (0.4.1)
     selectize-rails (0.12.6)
     selenium-webdriver (4.30.1)
@@ -642,7 +645,6 @@ DEPENDENCIES
   ancestry
   attachinary
   bootsnap
-  bootstrap
   bootstrap-datepicker-rails
   bootstrap-select-rails
   bootstrap-switch-rails

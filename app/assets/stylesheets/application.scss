@@ -1,18 +1,18 @@
 @use 'font-awesome/scss/font-awesome' with ($fa-font-path: '..', $fa-css-prefix: 'fas');
 
 // Import Helpy variables and boostrap overrides
-@import "bootstrap-overrides";
+@import "./bootstrap-overrides";
 
 // Import Bootstrap
 // Note: "bootstrap-sprockets" must be imported before "bootstrap" and "bootstrap/variables"
-@import "bootstrap";
+@import "bootstrap/dist/css/bootstrap";
 
 // Import font-awesome
 @import 'font-awesome/scss/font-awesome';
 
 // Import other dependencies
-@import "bootstrap-icon-chooser/css/icon-picker";
-@import "magnific-popup/dist/magnific-popup";
+//@import "bootstrap-icon-chooser/css/icon-picker";
+//@import "magnific-popup/dist/magnific-popup";
 @import "animate.css/animate.min";
 
 // Note: need to specify .scss extension as there is also a .css file

@@ -41,7 +41,7 @@ gem 'dartsass-rails'
 
 # Bootstrap/UI Gems
 # gem 'bootstrap-sass'
-gem 'bootstrap'
+# gem 'bootstrap'
 gem 'bootstrap_form'
 gem 'simple_form'
 gem 'twitter-bootstrap-rails'
